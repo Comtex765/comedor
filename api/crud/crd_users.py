@@ -29,11 +29,7 @@ def get_user_by_id(db: Session, user_id: int):
 
 
 def get_user_by_email(db: Session, email: str):
-    user = (
-        db.query(mod_user)
-        .filter(mod_user.email == email)
-        .first()
-    )
+    user = db.query(mod_user).filter(mod_user.email == email).first()
 
     return user
 

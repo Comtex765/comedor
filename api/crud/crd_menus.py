@@ -21,13 +21,12 @@ def get_menus(db: Session):
         sch_menu.MenuWithTypeTime(
             menu=sch_menu.MenuOut.model_validate(menu),
             menu_type=sch_menu.MenuTypeBase.model_validate(menu_type),
-            meal_time=sch_menu.MealTimeBase.model_validate(meal_time)
+            meal_time=sch_menu.MealTimeBase.model_validate(meal_time),
         )
         for menu, menu_type, meal_time in menus
     ]
 
     return response
-
 
 
 def create_menu(db: Session, menu: sch_menu.MenuCreate):
