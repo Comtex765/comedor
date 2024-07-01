@@ -1,4 +1,28 @@
 /*==============================================================*/
+/* DBMS name:      PostgreSQL 9.x                               */
+/* Created on:     1/7/2024 8:51:13                             */
+/*==============================================================*/
+
+
+drop table card;
+
+drop table dining_reservation;
+
+drop table meal_time;
+
+drop table menu;
+
+drop table menu_type;
+
+drop table reserve_status;
+
+drop table suggests;
+
+drop table user_type;
+
+drop table users;
+
+/*==============================================================*/
 /* Table: card                                                  */
 /*==============================================================*/
 create table card (
@@ -73,7 +97,6 @@ create table reserve_status (
 /*==============================================================*/
 create table suggests (
    id_suggest           SERIAL               not null,
-   id_user              INT4                 null,
    suggestion           TEXT                 null,
    created_cate         DATE                 null,
    constraint PK_SUGGESTS primary key (id_suggest)
@@ -97,12 +120,12 @@ create table users (
    id_user_type         INT4                 null,
    user_name            VARCHAR(100)         null,
    user_last_name       VARCHAR(100)         null,
+   cedula               CHAR(10)             unique null,
    email                VARCHAR(100)         unique null,
    hash_password        VARCHAR(200)         null,
    cellphone            CHAR(10)             unique null,
-   balance              MONEY                null,
+   balance              DECIMAL(10,2)        null,
    created_date         timestamp            null,
-   cedula               CHAR(10)             not null,
    constraint PK_USERS primary key (id_user)
 );
 
@@ -134,11 +157,6 @@ alter table menu
 alter table menu
    add constraint FK_MENU_REFERENCE_MEAL_TIM foreign key (id_meal_time)
       references meal_time (id_meal_time)
-      on delete restrict on update restrict;
-
-alter table suggests
-   add constraint FK_SUGGESTS_REFERENCE_USERS foreign key (id_user)
-      references users (id_user)
       on delete restrict on update restrict;
 
 alter table users

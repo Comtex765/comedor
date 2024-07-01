@@ -35,7 +35,6 @@ class User(Base):
     user_type = relationship("UserType", back_populates="users")
     card = relationship("Card", uselist=False, back_populates="user")
     dining_reservations = relationship("DiningReservation", back_populates="user")
-    suggestions = relationship("Suggest", back_populates="user")
 
     def set_password(self, password):
         self.hash_password = bcrypt.hashpw(
@@ -74,12 +73,8 @@ class Suggest(Base):
     __tablename__ = "suggests"
 
     id_suggest = Column(Integer, primary_key=True)
-    id_user = Column(Integer, ForeignKey("users.id_user"))
     suggestion = Column(Text)
     created_cate = Column(Date)
-
-    user = relationship("User", back_populates="suggestions")
-
 
 class DiningReservation(Base):
     __tablename__ = "dining_reservation"

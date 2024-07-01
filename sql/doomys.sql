@@ -1,7 +1,3 @@
-INSERT INTO public.users(id_user, id_user_type, user_name, user_last_name, email, hash_password, cellphone, balance, created_date, cedula)
-	VALUES 
-		(0, 0, 'N\D', 'N\D', 'nd@nd.nd', 'N\D', '0000000000', LOCALTIMESTAMP, '9999999999');
-   
 INSERT INTO public.meal_time(id_meal_time, meal_time, init_hour, end_hour)
 	VALUES 
       (1, 'Desayuno','06:30:00','11:45:00'),
