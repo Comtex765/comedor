@@ -6,7 +6,7 @@ from datetime import datetime
 
 def create_suggest(db: Session, suggest: sch_suggest.SuggestCreate):
     db_suggest = mod_suggest(
-        suggestion=suggest.suggestion, 
+        suggestion=suggest.suggestion,
         created_date=datetime.now(),
     )
     db.add(db_suggest)
