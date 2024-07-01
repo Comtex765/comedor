@@ -13,8 +13,13 @@ def get_user_by_id(db: Session, user_id: int):
 def get_user_by_email(db: Session, email: str):
     return db.query(mod_user).filter(mod_user.email == email).first()
 
+
 def get_user_cellphone(db: Session, cell: str):
     return db.query(mod_user).filter(mod_user.cellphone == cell).first()
+
+
+def get_user_cedula(db: Session, ced: str):
+    return db.query(mod_user).filter(mod_user.cedula == ced).first()
 
 
 def get_users(db: Session):

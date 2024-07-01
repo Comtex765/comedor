@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from api.schemas import sch_users as sch_user
 from api.crud import crd_users as crd_user
+from api.utils.cedula import check_cedula
 from sqlalchemy.orm import Session
 from api.database import get_db
 from typing import List
@@ -13,9 +14,17 @@ async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
     db_user = crd_user.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
+
     db_user = crd_user.get_user_cellphone(db, cell=user.cellphone)
     if db_user:
         raise HTTPException(status_code=400, detail="Cellphone already registered")
+
+    db_user = crd_user.get_user_cedula(db, ced=user.cedula)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Cedula already registered")
+
+    if check_cedula(user.cedula) is False:
+        raise HTTPException(status_code=400, detail="Cedula is invalid")
     return crd_user.create_user(db=db, user=user)
 
 
