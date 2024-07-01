@@ -1,28 +1,4 @@
 /*==============================================================*/
-/* DBMS name:      PostgreSQL 9.x                               */
-/* Created on:     1/7/2024 8:51:13                             */
-/*==============================================================*/
-
-
-drop table card;
-
-drop table dining_reservation;
-
-drop table meal_time;
-
-drop table menu;
-
-drop table menu_type;
-
-drop table reserve_status;
-
-drop table suggests;
-
-drop table user_type;
-
-drop table users;
-
-/*==============================================================*/
 /* Table: card                                                  */
 /*==============================================================*/
 create table card (

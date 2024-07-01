@@ -20,6 +20,6 @@ INSERT INTO public.user_type(id_user_type, description, percent_discount)
 
 INSERT INTO public.reserve_status(id_status, reserve_status)
 	VALUES 
-      (1, 'Próxima')
-      (2, 'Cancelada')
+      (1, 'Próxima'),
+      (2, 'Cancelada'),
       (3, 'Realizada');

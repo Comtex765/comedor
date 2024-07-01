@@ -76,6 +76,7 @@ class Suggest(Base):
     suggestion = Column(Text)
     created_cate = Column(Date)
 
+
 class DiningReservation(Base):
     __tablename__ = "dining_reservation"
 
