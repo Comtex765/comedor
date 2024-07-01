@@ -10,54 +10,53 @@ load_dotenv()
 EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-
 def send_email(email_receiver, user):
-    # Crear el mensaje
     msg = MIMEMultipart("alternative")
     msg["From"] = EMAIL_SENDER
     msg["To"] = email_receiver
     msg["Subject"] = "Usuario Creado"
 
-    # Cuerpo del mensaje
-    # Crear el contenido HTML
-
     body = f"""
     <html>
-        <body>
-            <center>
-                <h1>¡Hola!</h1>
-            </center>
+    <body>
+    <center>
+        <h1>¡Hola!</h1>
+    </center>
 
-            <p>
-                Bienvenido/a
+    <p>
+        Bienvenido/a
 
-                <b>{user}</b>
-            </p>
+        <b style="color: coral;">{user}</b>
+    </p>
 
-            <p>
-                Te informamos que se ha creado exitosamente tu cuenta en Comedor ESPOCH.
+    <p>
+        Te informamos que se ha creado exitosamente tu cuenta en Comedor ESPOCH.
 
-                <br>
-                Recuerda que tu usuario será tu correo:
+        <br>
+        Recuerda que tu usuario será tu correo:
 
-                <b>{email_receiver}</b>
+        <b style="color: coral;">{email_receiver}</b>
 
-                <br>
+        <br>
+        <br>
+        Junto a la contraseña ingresada en el registro
 
-                <h4 style="font-style: italic;">
-                    Nunca compartas tus credenciales
-                </h4>
-            </p>
+        <br>
 
-            <p>Te esperamos.</p>
-        </body>
+        <h4 style="font-style: italic; font-size: 25px; text-decoration: underline;">
+            Nunca compartas tus credenciales
+        </h4>
+    </p>
 
-        <footer style="font-size: 10px;">
-            Saludos,
+    <p>Te esperamos.</p>
+    </body>
 
-            <br>
-            El equipo DTIC
-        </footer>
+    <footer style="font-size: 10px;">
+        Saludos,
+
+        <br>
+        El equipo DTIC
+    </footer>
     </html>
     """
     # Crear el objeto MIMEText con el contenido HTML
