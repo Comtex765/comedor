@@ -21,9 +21,9 @@ async def read_menu(menu_id: int, db: Session = Depends(get_db)):
     return db_menu
 
 
-@router.get("/", response_model=List[sch_menu.MenuOut])
-async def read_menus(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    menus = crd_menu.get_menus(db=db, skip=skip, limit=limit)
+@router.get("/", response_model=List[sch_menu.MenuWithTypeTime])
+async def read_menus(db: Session = Depends(get_db)):
+    menus = crd_menu.get_menus(db)
     return menus
 
 

@@ -23,3 +23,7 @@ INSERT INTO public.reserve_status(id_status, reserve_status)
       (1, 'Próxima'),
       (2, 'Cancelada'),
       (3, 'Realizada');
+
+INSERT INTO public.users(id_user, id_user_type, user_name, user_last_name, email, hash_password, cellphone, balance, created_date, cedula)
+	VALUES 
+      (1, 1 , 'Fernando' , 'Novillo', 'ferchon123443@gmail.com', 'Fernando12', '0994637276', 0, LOCALTIMESTAMP, '0604401919'

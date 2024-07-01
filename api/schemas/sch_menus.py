@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import time
 
 
 class MenuBase(BaseModel):
@@ -23,3 +24,27 @@ class MenuOut(MenuBase):
 
     class Config:
         from_attributes = True
+
+
+class MealTimeBase(BaseModel):
+    id_meal_time: int
+    meal_time: str
+    init_hour: time
+    end_hour: time
+
+    class Config:
+        from_attributes = True
+
+
+class MenuTypeBase(BaseModel):
+    id_menu_type: int
+    menu_type: str
+
+    class Config:
+        from_attributes = True
+
+
+class MenuWithTypeTime(BaseModel):
+    menu: MenuOut
+    menu_type: MenuTypeBase
+    meal_time: MealTimeBase
