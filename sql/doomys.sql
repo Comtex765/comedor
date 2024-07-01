@@ -13,10 +13,10 @@ INSERT INTO public.menu_type(id_menu_type, menu_type)
    
 INSERT INTO public.user_type(id_user_type, description, percent_discount)
 	VALUES 
-      (0, 'Administrador',	0),
+      (0, 'Administrador', 0),
       (1, 'Estudiante',	25),
-      (2, 'Profesor',	10),
-      (3, 'Personal',	15);
+      (2, 'Profesor', 10),
+      (3, 'Personal', 15);
 
 INSERT INTO public.reserve_status(id_status, reserve_status)
 	VALUES 

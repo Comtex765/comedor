@@ -45,8 +45,4 @@ typing_extensions==4.12.2
 ujson==5.10.0
 uvicorn==0.30.1
 watchfiles==0.22.0
-<<<<<<< HEAD
 websockets==12.0
-=======
-websockets==12.0
->>>>>>> 7de3bb1a619e244612e039d66651f6ddd1d6f1b9
