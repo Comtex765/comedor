@@ -6,7 +6,7 @@ from api.database import get_db
 from datetime import timedelta
 
 
-import api.auth as auth
+import api.utils.auth as auth
 
 router = APIRouter()
 

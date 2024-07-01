@@ -72,7 +72,7 @@ def update_user(db: Session, user_id: int, user: sch_user.UserUpdate):
 def update_balance(db: Session, user_id: int, balance: float):
     db_user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
     if db_user:
-        db_user.balance = balance
+        db_user.balance = balance + float(db_user.balance)
         db.commit()
         db.refresh(db_user)
         return db_user
