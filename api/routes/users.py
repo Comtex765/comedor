@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from api.schemas import sch_users as sch_user
-from api.schemas import sch_cards as sch_card
 from api.crud import crd_users as crd_user
 from api.crud import crd_cards as crd_card
 from api.utils.cedula import check_cedula

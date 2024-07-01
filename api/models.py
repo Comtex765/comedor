@@ -74,7 +74,7 @@ class Suggest(Base):
 
     id_suggest = Column(Integer, primary_key=True)
     suggestion = Column(Text)
-    created_cate = Column(Date)
+    created_date = Column(TIMESTAMP)
 
 
 class DiningReservation(Base):
