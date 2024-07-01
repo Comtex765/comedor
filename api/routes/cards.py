@@ -21,8 +21,8 @@ async def read_card(card_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/", response_model=list[sch_card.CardOut])
-async def read_cards(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    cards = crd_card.get_cards(db, skip=skip, limit=limit)
+async def read_cards(db: Session = Depends(get_db)):
+    cards = crd_card.get_cards(db)
     return cards
 
 
