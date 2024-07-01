@@ -1,0 +1,28 @@
+from fastapi import Depends, APIRouter, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+from api.schemas.sch_users import LoginRequest
+from api.schemas.sch_token import Token
+from sqlalchemy.orm import Session
+from api.database import get_db
+from datetime import timedelta
+
+
+import api.auth as auth
+
+router = APIRouter()
+
+
+@router.post("/token", response_model=Token)
+async def login_for_access_token(login: LoginRequest, db: Session = Depends(get_db)):
+    user = auth.authenticate_user(db, login.email, login.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = auth.create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token}
