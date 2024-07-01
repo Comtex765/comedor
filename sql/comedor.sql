@@ -74,7 +74,7 @@ create table reserve_status (
 create table suggests (
    id_suggest           SERIAL               not null,
    suggestion           TEXT                 null,
-   created_cate         DATE                 null,
+   created_date         DATE                 null,
    constraint PK_SUGGESTS primary key (id_suggest)
 );
 
