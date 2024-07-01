@@ -6,14 +6,16 @@ from datetime import datetime
 
 import bcrypt
 
+
 def convert_user_to_user_with_type(user):
     if not user:
         return None
 
     return sch_user.UserWithType(
         user=sch_user.UserOut(**user.__dict__),
-        type=sch_user.UserType(**user.user_type.__dict__)
+        type=sch_user.UserType(**user.user_type.__dict__),
     )
+
 
 def get_user_by_id(db: Session, user_id: int):
     user = (
@@ -24,7 +26,6 @@ def get_user_by_id(db: Session, user_id: int):
     )
 
     return convert_user_to_user_with_type(user)
-
 
 
 def get_user_by_email(db: Session, email: str):
@@ -45,23 +46,23 @@ def get_user_id_by_email(db: Session, email: str):
         .filter(mod_user.email == email)
         .first()
     )
-    
+
     return user.id_user
 
 
 def get_user__by_cellphone(db: Session, cell: str):
-    user =  (
+    user = (
         db.query(mod_user)
         .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
         .filter(mod_user.cellphone == cell)
         .first()
     )
-    
+
     return convert_user_to_user_with_type(user)
 
 
 def get_user_cedula(db: Session, ced: str):
-    user =  (
+    user = (
         db.query(mod_user)
         .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
         .filter(mod_user.cedula == ced)
@@ -81,11 +82,11 @@ def get_users(db: Session):
     response = [
         sch_user.UserWithType(
             user=sch_user.UserOut.model_validate(user),
-            type=sch_user.UserType.model_validate(user_type)
+            type=sch_user.UserType.model_validate(user_type),
         )
         for user, user_type in results
     ]
-    
+
     return response
 
 
