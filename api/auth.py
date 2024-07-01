@@ -1,11 +1,7 @@
-from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from api.crud.crd_users import get_user_by_email
-from api.schemas.sch_token import TokenData
 from datetime import datetime, timedelta
-from api.models import User as mod_user
 from sqlalchemy.orm import Session
-from api.database import get_db
 from dotenv import load_dotenv
 from typing import Optional
 
@@ -41,10 +37,13 @@ def authenticate_user(db: Session, email: str, password: str):
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
+
     if expires_delta:
         expire = datetime.now() + expires_delta
     else:
         expire = datetime.now() + timedelta(minutes=15)
+
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
     return encoded_jwt

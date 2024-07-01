@@ -1,5 +1,4 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
 from datetime import datetime
 
 
@@ -15,15 +14,18 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     hash_password: str
 
+    class Config:
+        from_attributes = True
+
 
 class UserUpdate(UserBase):
-    pass
+    balance: float
 
 
 class UserOut(UserBase):
     id_user: int
-    created_date: datetime
     balance: float
+    created_date: datetime
 
     class Config:
         from_attributes = True
@@ -32,3 +34,8 @@ class UserOut(UserBase):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+class SetBalance(BaseModel):
+    email: EmailStr
+    new_balance: float

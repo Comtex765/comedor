@@ -25,11 +25,11 @@ class User(Base):
     id_user_type = Column(Integer, ForeignKey("user_type.id_user_type"))
     user_name = Column(String(100))
     user_last_name = Column(String(100))
+    cedula = Column(CHAR(10), unique=True)
     email = Column(String(100), unique=True)
     hash_password = Column(String(200))
     cellphone = Column(CHAR(10), unique=True)
     balance = Column(DECIMAL(10, 2))
-    cedula = Column(CHAR(10), unique=True)
     created_date = Column(TIMESTAMP)
 
     user_type = relationship("UserType", back_populates="users")
@@ -75,6 +75,7 @@ class Suggest(Base):
     id_suggest = Column(Integer, primary_key=True)
     suggestion = Column(Text)
     created_cate = Column(Date)
+
 
 class DiningReservation(Base):
     __tablename__ = "dining_reservation"

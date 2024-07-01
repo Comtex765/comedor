@@ -14,6 +14,11 @@ def get_user_by_email(db: Session, email: str):
     return db.query(mod_user).filter(mod_user.email == email).first()
 
 
+def get_user_id_by_email(db: Session, email: str):
+    user = db.query(mod_user).filter(mod_user.email == email).first()
+    return user.id_user
+
+
 def get_user_cellphone(db: Session, cell: str):
     return db.query(mod_user).filter(mod_user.cellphone == cell).first()
 
@@ -50,15 +55,28 @@ def create_user(db: Session, user: sch_user.UserCreate):
 def update_user(db: Session, user_id: int, user: sch_user.UserUpdate):
     db_user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
     if db_user:
-        if user.hash_password:
-            db_user.hash_password = bcrypt.hashpw(
-                user.hash_password.encode("utf-8"), bcrypt.gensalt()
-            ).decode("utf-8")
-        for key, value in user.model_dump(exclude_unset=True).items():
-            setattr(db_user, key, value)
+
+        """if user.hash_password:
+        db_user.hash_password = bcrypt.hashpw(
+            user.hash_password.encode("utf-8"), bcrypt.gensalt()
+        ).decode("utf-8")"""
+
+        for field, value in user.model_dump(exclude_unset=True).items():
+            setattr(db_user, field, value)
+
         db.commit()
         db.refresh(db_user)
     return db_user
+
+
+def update_balance(db: Session, user_id: int, balance: float):
+    db_user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
+    if db_user:
+        db_user.balance = balance
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    return None
 
 
 def delete_user(db: Session, user_id: int):
