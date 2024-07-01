@@ -1,3 +1,4 @@
+from api.models import UserType as mod_user_type
 from api.schemas import sch_users as sch_user
 from api.models import User as mod_user
 from sqlalchemy.orm import Session
@@ -5,30 +6,87 @@ from datetime import datetime
 
 import bcrypt
 
+def convert_user_to_user_with_type(user):
+    if not user:
+        return None
+
+    return sch_user.UserWithType(
+        user=sch_user.UserOut(**user.__dict__),
+        type=sch_user.UserType(**user.user_type.__dict__)
+    )
 
 def get_user_by_id(db: Session, user_id: int):
-    return db.query(mod_user).filter(mod_user.id_user == user_id).first()
+    user = (
+        db.query(mod_user)
+        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
+        .filter(mod_user.id_user == user_id)
+        .first()
+    )
+
+    return convert_user_to_user_with_type(user)
+
 
 
 def get_user_by_email(db: Session, email: str):
-    return db.query(mod_user).filter(mod_user.email == email).first()
+    user = (
+        db.query(mod_user)
+        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
+        .filter(mod_user.email == email)
+        .first()
+    )
+
+    return convert_user_to_user_with_type(user)
 
 
 def get_user_id_by_email(db: Session, email: str):
-    user = db.query(mod_user).filter(mod_user.email == email).first()
+    user = (
+        db.query(mod_user)
+        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
+        .filter(mod_user.email == email)
+        .first()
+    )
+    
     return user.id_user
 
 
-def get_user_cellphone(db: Session, cell: str):
-    return db.query(mod_user).filter(mod_user.cellphone == cell).first()
+def get_user__by_cellphone(db: Session, cell: str):
+    user =  (
+        db.query(mod_user)
+        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
+        .filter(mod_user.cellphone == cell)
+        .first()
+    )
+    
+    return convert_user_to_user_with_type(user)
 
 
 def get_user_cedula(db: Session, ced: str):
-    return db.query(mod_user).filter(mod_user.cedula == ced).first()
+    user =  (
+        db.query(mod_user)
+        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
+        .filter(mod_user.cedula == ced)
+        .first()
+    )
+
+    return convert_user_to_user_with_type(user)
 
 
 def get_users(db: Session):
-    return db.query(mod_user).all()
+    results = (
+        db.query(mod_user, mod_user_type)
+        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
+        .all()
+    )
+
+    response = [
+        sch_user.UserWithType(
+            user=sch_user.UserOut.model_validate(user),
+            type=sch_user.UserType.model_validate(user_type)
+        )
+        for user, user_type in results
+    ]
+    
+    return response
 
 
 def create_user(db: Session, user: sch_user.UserCreate):

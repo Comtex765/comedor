@@ -47,7 +47,7 @@ async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db
     return db_user
 
 
-@router.get("/id/{user_id}", response_model=sch_user.UserOut)
+@router.get("/id/{user_id}", response_model=sch_user.UserWithType)
 async def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crd_user.get_user_by_id(db, user_id=user_id)
     if db_user is None:
@@ -55,7 +55,7 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.get("/email/{user_email}", response_model=sch_user.UserOut)
+@router.get("/email/{user_email}", response_model=sch_user.UserWithType)
 async def read_user(user_email: str, db: Session = Depends(get_db)):
     db_user = crd_user.get_user_by_email(db, email=user_email)
     if db_user is None:
@@ -63,7 +63,7 @@ async def read_user(user_email: str, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.get("/", response_model=List[sch_user.UserOut])
+@router.get("/", response_model=List[sch_user.UserWithType])
 async def read_users(db: Session = Depends(get_db)):
     users = crd_user.get_users(db)
     return users

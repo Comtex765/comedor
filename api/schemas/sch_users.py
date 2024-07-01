@@ -39,3 +39,17 @@ class LoginRequest(BaseModel):
 class SetBalance(BaseModel):
     email: EmailStr
     new_balance: float
+
+
+class UserType(BaseModel):
+    id_user_type: int
+    description: str
+    percent_discount: int
+
+    class Config:
+        from_attributes = True
+
+
+class UserWithType(BaseModel):
+    user: UserOut
+    type: UserType
