@@ -11,7 +11,7 @@ import api.utils.auth as auth
 router = APIRouter()
 
 
-@router.post("/token", response_model=Token)
+@router.post("", response_model=Token)
 async def login_for_access_token(login: LoginRequest, db: Session = Depends(get_db)):
     user = auth.authenticate_user(db, login.email, login.password)
     if not user:
