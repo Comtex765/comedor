@@ -1,3 +1,5 @@
+from api.models import MealTime as mod_meal_time
+from api.models import MenuType as mod_menu_type
 from api.schemas import sch_menus as sch_menu
 from api.models import Menu as mod_menu
 from sqlalchemy.orm import Session
@@ -7,8 +9,25 @@ def get_menu(db: Session, menu_id: int):
     return db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
 
 
-def get_menus(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(mod_menu).offset(skip).limit(limit).all()
+def get_menus(db: Session):
+    menus = (
+        db.query(mod_menu, mod_menu_type, mod_meal_time)
+        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
+        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
+        .all()
+    )
+
+    response = [
+        sch_menu.MenuWithTypeTime(
+            menu=sch_menu.MenuOut.model_validate(menu),
+            menu_type=sch_menu.MenuTypeBase.model_validate(menu_type),
+            meal_time=sch_menu.MealTimeBase.model_validate(meal_time)
+        )
+        for menu, menu_type, meal_time in menus
+    ]
+
+    return response
+
 
 
 def create_menu(db: Session, menu: sch_menu.MenuCreate):
