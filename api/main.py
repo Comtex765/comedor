@@ -1,4 +1,4 @@
-from api.routes import users, cards, login
+from api.routes import users, cards, login, menus
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
@@ -21,3 +21,4 @@ def get_route():
 app.include_router(login.router, prefix="/login", tags=["login"])
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(cards.router, prefix="/cards", tags=["cards"])
+app.include_router(menus.router, prefix="/menus", tags=["menus"])

@@ -13,12 +13,15 @@ async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
     db_user = crd_user.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
+    db_user = crd_user.get_user_cellphone(db, cell=user.cellphone)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Cellphone already registered")
     return crd_user.create_user(db=db, user=user)
 
 
 @router.get("/id/{user_id}", response_model=sch_user.UserOut)
 async def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crd_user.get_user(db, user_id=user_id)
+    db_user = crd_user.get_user_by_id(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user

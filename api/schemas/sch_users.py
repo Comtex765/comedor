@@ -9,7 +9,7 @@ class UserBase(BaseModel):
     user_last_name: str
     email: EmailStr
     cellphone: str
-    balance: Optional[float]
+    cedula: str
 
 
 class UserCreate(UserBase):
@@ -23,6 +23,7 @@ class UserUpdate(UserBase):
 class UserOut(UserBase):
     id_user: int
     created_date: datetime
+    balance: float
 
     class Config:
         from_attributes = True

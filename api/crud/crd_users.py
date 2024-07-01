@@ -6,12 +6,15 @@ from datetime import datetime
 import bcrypt
 
 
-def get_user(db: Session, user_id: int):
+def get_user_by_id(db: Session, user_id: int):
     return db.query(mod_user).filter(mod_user.id_user == user_id).first()
 
 
 def get_user_by_email(db: Session, email: str):
     return db.query(mod_user).filter(mod_user.email == email).first()
+
+def get_user_cellphone(db: Session, cell: str):
+    return db.query(mod_user).filter(mod_user.cellphone == cell).first()
 
 
 def get_users(db: Session):
@@ -29,8 +32,9 @@ def create_user(db: Session, user: sch_user.UserCreate):
         email=user.email,
         hash_password=hashed_password,
         cellphone=user.cellphone,
-        balance=user.balance,
+        balance=0,
         created_date=datetime.now(),
+        cedula=user.cedula,
     )
     db.add(db_user)
     db.commit()
@@ -53,7 +57,7 @@ def update_user(db: Session, user_id: int, user: sch_user.UserUpdate):
 
 
 def delete_user(db: Session, user_id: int):
-    db_user = get_user(db, user_id)
+    db_user = get_user_by_id(db, user_id)
     if db_user is None:
         return None
 

@@ -7,12 +7,13 @@ import os
 
 load_dotenv()
 
-EMAIL_SENDER  = os.getenv("EMAIL_SENDER")
+EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
 
 def send_email(email_receiver, user):
     # Crear el mensaje
-    msg = MIMEMultipart('alternative')
+    msg = MIMEMultipart("alternative")
     msg["From"] = EMAIL_SENDER
     msg["To"] = email_receiver
     msg["Subject"] = "Usuario Creado"
@@ -60,11 +61,10 @@ def send_email(email_receiver, user):
     </html>
     """
     # Crear el objeto MIMEText con el contenido HTML
-    mime_text = MIMEText(body, 'html')
+    mime_text = MIMEText(body, "html")
 
     # Adjuntar el contenido HTML al mensaje
     msg.attach(mime_text)
-
 
     # Conectar al servidor SMTP de Gmail
     try:
@@ -81,5 +81,6 @@ def send_email(email_receiver, user):
 
     finally:
         server.quit()
+
 
 send_email("novilofa2003@gmail.com", "Fernando Novillo")

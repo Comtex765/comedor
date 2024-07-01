@@ -9,6 +9,7 @@ from sqlalchemy import (
     DECIMAL,
     TIMESTAMP,
     CHAR,
+    BOOLEAN,
 )
 from sqlalchemy.orm import relationship, declarative_base
 
@@ -28,6 +29,7 @@ class User(Base):
     hash_password = Column(String(200))
     cellphone = Column(CHAR(10), unique=True)
     balance = Column(DECIMAL(10, 2))
+    cedula = Column(CHAR(10), unique=True)
     created_date = Column(TIMESTAMP)
 
     user_type = relationship("UserType", back_populates="users")
@@ -135,7 +137,7 @@ class Menu(Base):
     id_meal_time = Column(Integer, ForeignKey("meal_time.id_meal_time"))
     menu_title = Column(String(50))
     menu_description = Column(Text)
-    menu_date = Column(Date)
+    status = Column(BOOLEAN)
     price = Column(DECIMAL(5, 2))
 
     menu_type = relationship("MenuType", back_populates="menus")

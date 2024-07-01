@@ -100,9 +100,8 @@ create table users (
    email                VARCHAR(100)         unique null,
    hash_password        VARCHAR(200)         null,
    cellphone            CHAR(10)             unique null,
-   balance              MONEY                null,
+   balance              DECIMAL(10,2)                null,
    created_date         timestamp            null,
-   cedula               CHAR(10)             not null,
    constraint PK_USERS primary key (id_user)
 );
 
