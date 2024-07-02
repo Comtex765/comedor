@@ -29,6 +29,18 @@ def get_user_by_id(db: Session, user_id: int):
     return convert_user_to_user_with_type(user)
 
 
+def get_user_discount(db: Session, user_id: int):
+    user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
+
+    discount = (
+        db.query(mod_user_type)
+        .filter(mod_user_type.id_user_type == user.id_user_type)
+        .first()
+    )
+
+    return discount.percent_discount
+
+
 def get_user_by_email(db: Session, email: str):
     user = db.query(mod_user).filter(mod_user.email == email).first()
 
@@ -46,7 +58,7 @@ def get_user_id_by_email(db: Session, email: str):
     return user.id_user
 
 
-def get_user__by_cellphone(db: Session, cell: str):
+def get_user_by_cellphone(db: Session, cell: str):
     user = (
         db.query(mod_user)
         .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
@@ -106,7 +118,7 @@ def create_user(db: Session, user: sch_user.UserCreate):
     db.refresh(db_user)
 
     send_email(db_user.email, db_user.user_name + " " + db_user.user_last_name)
-    
+
     return db_user
 
 

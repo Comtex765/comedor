@@ -5,8 +5,44 @@ from api.models import Menu as mod_menu
 from sqlalchemy.orm import Session
 
 
-def get_menu(db: Session, menu_id: int):
-    return db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
+def convert_menu_to_menu_with_time_type(menu):
+    if not menu:
+        return None
+
+    return sch_menu.MenuWithTypeTime(
+        menu=sch_menu.MenuOut(**menu.__dict__),
+        menu_type=sch_menu.MenuType(**menu.menu_type.__dict__),
+        meal_time=sch_menu.MealTime(**menu.meal_time.__dict__),
+    )
+
+
+""" 
+def get_user_by_id(db: Session, user_id: int):
+    user = (
+        db.query(mod_user)
+        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
+        .filter(mod_user.id_user == user_id)
+        .first()
+    )
+
+    return convert_user_to_user_with_type(user) """
+
+
+def get_menu_by_id(db: Session, menu_id: int):
+    menu = (
+        db.query(mod_menu)
+        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
+        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
+        .filter(mod_menu.id_menu == menu_id)
+        .first()
+    )
+
+    return convert_menu_to_menu_with_time_type(menu)
+
+
+def get_menu_price(db: Session, menu_id: int):
+    menu = db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
+    return menu.price
 
 
 def get_menus(db: Session):

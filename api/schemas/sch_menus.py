@@ -26,7 +26,7 @@ class MenuOut(MenuBase):
         from_attributes = True
 
 
-class MealTimeBase(BaseModel):
+class MealTime(BaseModel):
     id_meal_time: int
     meal_time: str
     init_hour: time
@@ -36,7 +36,7 @@ class MealTimeBase(BaseModel):
         from_attributes = True
 
 
-class MenuTypeBase(BaseModel):
+class MenuType(BaseModel):
     id_menu_type: int
     menu_type: str
 
@@ -46,5 +46,5 @@ class MenuTypeBase(BaseModel):
 
 class MenuWithTypeTime(BaseModel):
     menu: MenuOut
-    menu_type: MenuTypeBase
-    meal_time: MealTimeBase
+    menu_type: MenuType
+    meal_time: MealTime

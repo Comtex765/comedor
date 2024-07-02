@@ -10,6 +10,7 @@ load_dotenv()
 EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
+
 def send_email(email_receiver, user):
     msg = MIMEMultipart("alternative")
     msg["From"] = EMAIL_SENDER
@@ -80,6 +81,3 @@ def send_email(email_receiver, user):
 
     finally:
         server.quit()
-
-
-send_email("novilofa2003@gmail.com", "Fernando Novillo")

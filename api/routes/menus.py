@@ -13,9 +13,9 @@ async def create_menu(menu: sch_menu.MenuCreate, db: Session = Depends(get_db)):
     return crd_menu.create_menu(db=db, menu=menu)
 
 
-@router.get("/{menu_id}", response_model=sch_menu.MenuOut)
+@router.get("/{menu_id}", response_model=sch_menu.MenuWithTypeTime)
 async def read_menu(menu_id: int, db: Session = Depends(get_db)):
-    db_menu = crd_menu.get_menu(db=db, menu_id=menu_id)
+    db_menu = crd_menu.get_menu_by_id(db=db, menu_id=menu_id)
     if db_menu is None:
         raise HTTPException(status_code=404, detail="Menu not found")
     return db_menu
