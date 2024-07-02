@@ -8,7 +8,7 @@ from api.database import get_db
 router = APIRouter()
 
 
-@router.post("/", response_model=sch_card.CardOut)
+@router.post("", response_model=sch_card.CardOut)
 async def create_card(card: sch_card.CardCreate, db: Session = Depends(get_db)):
     db_card = crd_card.get_card_by_card_id(db, card_id=card.id_user)
     if db_card:
@@ -38,7 +38,7 @@ async def read_card(user_id: int, db: Session = Depends(get_db)):
     return db_card
 
 
-@router.get("/", response_model=list[sch_card.CardOut])
+@router.get("", response_model=list[sch_card.CardOut])
 async def read_cards(db: Session = Depends(get_db)):
     cards = crd_card.get_cards(db)
     return cards
