@@ -74,12 +74,13 @@ def get_all_menus(db: Session):
 
     return response
 
+
 def get_all_desayunos(db: Session):
     menus = (
         db.query(mod_menu, mod_menu_type, mod_meal_time)
         .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
         .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
-        .filter(mod_meal_time.meal_time == 'Desayuno')
+        .filter(mod_meal_time.meal_time == "Desayuno")
         .all()
     )
 
@@ -93,13 +94,14 @@ def get_all_desayunos(db: Session):
     ]
 
     return response
+
 
 def get_all_almuerzos(db: Session):
     menus = (
         db.query(mod_menu, mod_menu_type, mod_meal_time)
         .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
         .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
-        .filter(mod_meal_time.meal_time == 'Almuerzo')
+        .filter(mod_meal_time.meal_time == "Almuerzo")
         .all()
     )
 
@@ -114,12 +116,13 @@ def get_all_almuerzos(db: Session):
 
     return response
 
+
 def get_all_meriendas(db: Session):
     menus = (
         db.query(mod_menu, mod_menu_type, mod_meal_time)
         .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
         .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
-        .filter(mod_meal_time.meal_time == 'Merienda')
+        .filter(mod_meal_time.meal_time == "Merienda")
         .all()
     )
 

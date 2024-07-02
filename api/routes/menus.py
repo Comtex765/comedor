@@ -40,6 +40,7 @@ async def read_menus(db: Session = Depends(get_db)):
 
     return menus
 
+
 @router.get("/desayunos/", response_model=List[sch_menu.MenuWithTypeTime])
 async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_all_desayunos(db)
@@ -48,6 +49,7 @@ async def read_menus(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="There are not desayuno menus")
 
     return menus
+
 
 @router.get("/almuerzos/", response_model=List[sch_menu.MenuWithTypeTime])
 async def read_menus(db: Session = Depends(get_db)):
@@ -58,6 +60,7 @@ async def read_menus(db: Session = Depends(get_db)):
 
     return menus
 
+
 @router.get("/meriendas/", response_model=List[sch_menu.MenuWithTypeTime])
 async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_all_meriendas(db)
@@ -66,6 +69,7 @@ async def read_menus(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="There are not merienda menus")
 
     return menus
+
 
 @router.put("/{menu_id}", response_model=sch_menu.MenuOut)
 async def update_menu(
