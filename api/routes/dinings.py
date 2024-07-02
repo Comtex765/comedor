@@ -18,7 +18,9 @@ async def read_dining_reservations(db: Session = Depends(get_db)):
     "/reservations/{reservation_id}", response_model=sch_dining.ReservationWhole
 )
 async def read_dining_reservation(reservation_id: int, db: Session = Depends(get_db)):
-    reservation = crd_dining.get_dining_reservation_by_id(db, reservation_id=reservation_id)
+    reservation = crd_dining.get_dining_reservation_by_id(
+        db, reservation_id=reservation_id
+    )
     if reservation is None:
         raise HTTPException(status_code=404, detail="Reservation not found")
     return reservation

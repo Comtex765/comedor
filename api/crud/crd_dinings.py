@@ -16,8 +16,8 @@ def get_dining_reservation_by_id(db: Session, reservation_id: int):
         .join(
             mod_reserve_status,
             mod_reservation.id_status == mod_reserve_status.id_status,
-        ).
-        filter(mod_reservation.id_reservation == reservation_id)
+        )
+        .filter(mod_reservation.id_reservation == reservation_id)
         .all()
     )
 
@@ -41,7 +41,7 @@ def get_dining_reservation_by_id(db: Session, reservation_id: int):
                 "total_cost": res.total_cost,
             },
             "user": user_info.model_dump(),
-            "menu": menu_info.model_dump(), 
+            "menu": menu_info.model_dump(),
             "reserveStatus": {
                 "id_status": res.reserve_status.id_status,
                 "reserve_status": res.reserve_status.reserve_status,
@@ -51,8 +51,6 @@ def get_dining_reservation_by_id(db: Session, reservation_id: int):
         result.append(reservation_data)
 
     return result[0]
-
-
 
 
 def get_dining_reservations(db: Session):
@@ -85,7 +83,7 @@ def get_dining_reservations(db: Session):
                 "total_cost": res.total_cost,
             },
             "user": user_info.model_dump(),
-            "menu": menu_info.model_dump(), 
+            "menu": menu_info.model_dump(),
             "reserveStatus": {
                 "id_status": res.reserve_status.id_status,
                 "reserve_status": res.reserve_status.reserve_status,
