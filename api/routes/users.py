@@ -16,7 +16,7 @@ async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    db_user = crd_user.get_user__by_cellphone(db, cell=user.cellphone)
+    db_user = crd_user.get_user_by_cellphone(db, cell=user.cellphone)
     if db_user:
         raise HTTPException(status_code=400, detail="Cellphone already registered")
 

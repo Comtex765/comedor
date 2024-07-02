@@ -3,6 +3,7 @@ from api.crud.crd_users import convert_user_to_user_with_type
 from api.models import DiningReservation as mod_reservation
 from api.models import ReserveStatus as mod_reserve_status
 from api.models import DiningReservation as mod_dining
+from api.email.reservation_ticket import send_email
 from api.schemas import sch_dinings as sch_dinings
 from api.crud import crd_menus as crd_menu
 from api.crud import crd_users as crd_user
@@ -120,6 +121,12 @@ def create_dining_reservation(
     db.add(db_reservation)
     db.commit()
     db.refresh(db_reservation)
+
+    send_email(
+        get_dining_reservation_by_id(
+            db=db, reservation_id=db_reservation.id_reservation
+        )
+    )
 
     return db_reservation
 
