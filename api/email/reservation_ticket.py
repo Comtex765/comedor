@@ -13,25 +13,28 @@ EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 
 def send_email(reservation: sch_dining):
-    nombre = reservation['user']['user']['user_name'] + " " + reservation['user']['user']['user_last_name']
-    reservation_date = reservation['reservation']['reservation_date']
-    reservation_hour = reservation['reservation']['reservation_hour']
-    percent_discount = reservation['user']['type']['percent_discount']
-    fecha_creacion = reservation['reservation']['created_date']
-    menu_type = reservation['menu']['menu_type']['menu_type']
-    meal_time = reservation['menu']['meal_time']['meal_time']
-    id_factura = reservation['reservation']['id_reservation']
-    email_receiver = reservation['user']['user']['email']
+    nombre = (
+        reservation["user"]["user"]["user_name"]
+        + " "
+        + reservation["user"]["user"]["user_last_name"]
+    )
+    reservation_date = reservation["reservation"]["reservation_date"]
+    reservation_hour = reservation["reservation"]["reservation_hour"]
+    percent_discount = reservation["user"]["type"]["percent_discount"]
+    fecha_creacion = reservation["reservation"]["created_date"]
+    menu_type = reservation["menu"]["menu_type"]["menu_type"]
+    meal_time = reservation["menu"]["meal_time"]["meal_time"]
+    id_factura = reservation["reservation"]["id_reservation"]
+    email_receiver = reservation["user"]["user"]["email"]
     reservation_hour = reservation_hour.strftime("%H:%M")
-    menu = reservation['menu']['menu']['menu_title']
-    total = reservation['reservation']['total_cost']
-    price = reservation['menu']['menu']['price']
-    
+    menu = reservation["menu"]["menu"]["menu_title"]
+    total = reservation["reservation"]["total_cost"]
+    price = reservation["menu"]["menu"]["price"]
 
     # Calculando el total con descuento
-    discount =round((price * percent_discount) / 100, 2)
+    discount = round((price * percent_discount) / 100, 2)
 
-    #email_receiver = reservation.user.user.email
+    # email_receiver = reservation.user.user.email
     msg = MIMEMultipart("alternative")
     msg["From"] = EMAIL_SENDER
     msg["To"] = email_receiver

@@ -24,6 +24,10 @@ async def read_menu(menu_id: int, db: Session = Depends(get_db)):
 @router.get("", response_model=List[sch_menu.MenuWithTypeTime])
 async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_menus(db)
+
+    if menus == []:
+        raise HTTPException(status_code=404, detail="There are not menus")
+
     return menus
 
 
@@ -34,6 +38,7 @@ async def update_menu(
     db_menu = crd_menu.get_menu(db=db, menu_id=menu_id)
     if db_menu is None:
         raise HTTPException(status_code=404, detail="Menu not found")
+
     return crd_menu.update_menu(db=db, menu_id=menu_id, menu=menu)
 
 
