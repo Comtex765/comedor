@@ -2,7 +2,7 @@ INSERT INTO public.meal_time(id_meal_time, meal_time, init_hour, end_hour)
 	VALUES 
       (1, 'Desayuno','06:30:00','11:45:00'),
       (2, 'Almuerzo','12:00:00','15:00:00'),
-      (3, 'Medienda','18:00:00','21:00:00');
+      (3, 'Merienda','18:00:00','21:00:00');
 
 INSERT INTO public.menu_type(id_menu_type, menu_type)
 	VALUES 
