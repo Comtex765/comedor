@@ -8,7 +8,7 @@ from typing import List
 router = APIRouter()
 
 
-@router.post("/", response_model=sch_menu.MenuOut)
+@router.post("", response_model=sch_menu.MenuOut)
 async def create_menu(menu: sch_menu.MenuCreate, db: Session = Depends(get_db)):
     return crd_menu.create_menu(db=db, menu=menu)
 
@@ -21,7 +21,7 @@ async def read_menu(menu_id: int, db: Session = Depends(get_db)):
     return db_menu
 
 
-@router.get("/", response_model=List[sch_menu.MenuWithTypeTime])
+@router.get("", response_model=List[sch_menu.MenuWithTypeTime])
 async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_menus(db)
     return menus

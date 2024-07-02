@@ -9,7 +9,7 @@ from typing import List
 router = APIRouter()
 
 
-@router.post("/", response_model=sch_suggest.SuggestOut)
+@router.post("", response_model=sch_suggest.SuggestOut)
 def create_suggestion(
     suggest: sch_suggest.SuggestCreate, db: Session = Depends(get_db)
 ):
@@ -17,7 +17,7 @@ def create_suggestion(
     return crd_suggest.create_suggest(db=db, suggest=suggest)
 
 
-@router.get("/", response_model=List[sch_suggest.SuggestOut])
+@router.get("", response_model=List[sch_suggest.SuggestOut])
 def read_suggestions(db: Session = Depends(get_db)):
     return crd_suggest.get_suggests(db=db)
 
