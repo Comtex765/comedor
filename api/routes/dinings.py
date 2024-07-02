@@ -41,7 +41,7 @@ async def update_dining_reservation(
     reservation: sch_dining.DiningReservationUpdate,
     db: Session = Depends(get_db),
 ):
-    db_reservation = crd_dining.get_dining_reservation(
+    db_reservation = crd_dining.get_dining_reservation_by_id(
         db, reservation_id=reservation_id
     )
     if db_reservation is None:
