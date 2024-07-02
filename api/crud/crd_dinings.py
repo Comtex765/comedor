@@ -3,6 +3,7 @@ from api.crud.crd_users import convert_user_to_user_with_type
 from api.models import DiningReservation as mod_reservation
 from api.models import ReserveStatus as mod_reserve_status
 from api.models import DiningReservation as mod_dining
+from api.email.reservation_ticket import send_email
 from api.schemas import sch_dinings as sch_dinings
 from api.crud import crd_menus as crd_menu
 from api.crud import crd_users as crd_user
@@ -95,26 +96,14 @@ def get_dining_reservations(db: Session):
     return result
 
 
-""" 
-def get_menus(db: Session):
-    menus = (
-        db.query(mod_menu, mod_menu_type, mod_meal_time)
-        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
-        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
-        .all()
+def get_only_dining_reservation(db: Session, reservation_id: int):
+    reservation = (
+        db.query(mod_reservation)
+        .filter(mod_reservation.id_reservation == reservation_id)
+        .first()
     )
 
-    response = [
-        sch_menu.MenuWithTypeTime(
-            menu=sch_menu.MenuOut.model_validate(menu),
-            menu_type=sch_menu.MenuTypeBase.model_validate(menu_type),
-            meal_time=sch_menu.MealTimeBase.model_validate(meal_time),
-        )
-        for menu, menu_type, meal_time in menus
-    ]
-
-    return response
- """
+    return reservation
 
 
 def create_dining_reservation(
@@ -132,6 +121,12 @@ def create_dining_reservation(
     db.add(db_reservation)
     db.commit()
     db.refresh(db_reservation)
+
+    send_email(
+        get_dining_reservation_by_id(
+            db=db, reservation_id=db_reservation.id_reservation
+        )
+    )
 
     return db_reservation
 
@@ -154,7 +149,9 @@ def delete_dining_reservation(db: Session, reservation_id: int):
     db_reservation = (
         db.query(mod_dining).filter(mod_dining.id_reservation == reservation_id).first()
     )
-    if db_reservation:
-        db.delete(db_reservation)
-        db.commit()
+    if db_reservation is None:
+        return None
+
+    db.delete(db_reservation)
+    db.commit()
     return db_reservation

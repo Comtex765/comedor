@@ -55,9 +55,9 @@ async def update_dining_reservation(
     "/reservations/{reservation_id}", response_model=sch_dining.DiningReservationOut
 )
 async def delete_dining_reservation(reservation_id: int, db: Session = Depends(get_db)):
-    db_reservation = crd_dining.get_dining_reservation(
+    db_reservation = crd_dining.delete_dining_reservation(
         db, reservation_id=reservation_id
     )
     if db_reservation is None:
         raise HTTPException(status_code=404, detail="Reservation not found")
-    return crd_dining.delete_dining_reservation(db, reservation_id=reservation_id)
+    return db_reservation

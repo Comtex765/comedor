@@ -150,7 +150,7 @@ def update_balance(db: Session, user_id: int, balance: float):
 
 
 def delete_user(db: Session, user_id: int):
-    db_user = get_user_by_id(db, user_id)
+    db_user = db.query(mod_user).filter(mod_user.id_reservation == user_id).first()
     if db_user is None:
         return None
 
