@@ -16,18 +16,6 @@ def convert_menu_to_menu_with_time_type(menu):
     )
 
 
-""" 
-def get_user_by_id(db: Session, user_id: int):
-    user = (
-        db.query(mod_user)
-        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
-        .filter(mod_user.id_user == user_id)
-        .first()
-    )
-
-    return convert_user_to_user_with_type(user) """
-
-
 def get_menu_by_id(db: Session, menu_id: int):
     menu = (
         db.query(mod_menu)
