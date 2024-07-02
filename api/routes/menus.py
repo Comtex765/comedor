@@ -75,7 +75,7 @@ async def read_menus(db: Session = Depends(get_db)):
 async def update_menu(
     menu_id: int, menu: sch_menu.MenuUpdate, db: Session = Depends(get_db)
 ):
-    db_menu = crd_menu.get_menu(db=db, menu_id=menu_id)
+    db_menu = crd_menu.get_menu_by_id(db=db, menu_id=menu_id)
     if db_menu is None:
         raise HTTPException(status_code=404, detail="Menu not found")
 
