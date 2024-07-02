@@ -10,13 +10,13 @@ from typing import List
 router = APIRouter()
 
 
-@router.post("/", response_model=sch_user.UserOut)
+@router.post("", response_model=sch_user.UserOut)
 async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
     db_user = crd_user.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    db_user = crd_user.get_user_cellphone(db, cell=user.cellphone)
+    db_user = crd_user.get_user__by_cellphone(db, cell=user.cellphone)
     if db_user:
         raise HTTPException(status_code=400, detail="Cellphone already registered")
 
@@ -63,7 +63,7 @@ async def read_user(user_email: str, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.get("/", response_model=List[sch_user.UserWithType])
+@router.get("", response_model=List[sch_user.UserWithType])
 async def read_users(db: Session = Depends(get_db)):
     users = crd_user.get_users(db)
     return users
