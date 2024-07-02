@@ -1,3 +1,4 @@
+from api.email.account_creating import send_email
 from api.models import UserType as mod_user_type
 from api.schemas import sch_users as sch_user
 from api.models import User as mod_user
@@ -103,6 +104,9 @@ def create_user(db: Session, user: sch_user.UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
+    send_email(db_user.email, db_user.user_name + " " + db_user.user_last_name)
+    
     return db_user
 
 
