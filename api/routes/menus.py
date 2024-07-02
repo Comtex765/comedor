@@ -39,7 +39,7 @@ async def update_menu(
 
 @router.delete("/{menu_id}", response_model=sch_menu.MenuOut)
 async def delete_menu(menu_id: int, db: Session = Depends(get_db)):
-    db_menu = crd_menu.get_menu(db=db, menu_id=menu_id)
+    db_menu = crd_menu.delete_menu(db=db, menu_id=menu_id)
     if db_menu is None:
         raise HTTPException(status_code=404, detail="Menu not found")
     return crd_menu.delete_menu(db=db, menu_id=menu_id)
