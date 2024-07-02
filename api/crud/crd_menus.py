@@ -53,6 +53,12 @@ def get_menus(db: Session):
     return response
 
 
+def get_only_menu(db: Session, menu_id: int):
+    menu = db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
+
+    return menu
+
+
 def create_menu(db: Session, menu: sch_menu.MenuCreate):
     db_menu = mod_menu(**menu.model_dump())
     db_menu.status = True
@@ -74,7 +80,9 @@ def update_menu(db: Session, menu_id: int, menu: sch_menu.MenuUpdate):
 
 def delete_menu(db: Session, menu_id: int):
     db_menu = db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
-    if db_menu:
-        db.delete(db_menu)
-        db.commit()
+    if db_menu is None:
+        return None
+
+    db.delete(db_menu)
+    db.commit()
     return db_menu

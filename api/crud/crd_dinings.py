@@ -95,26 +95,14 @@ def get_dining_reservations(db: Session):
     return result
 
 
-""" 
-def get_menus(db: Session):
-    menus = (
-        db.query(mod_menu, mod_menu_type, mod_meal_time)
-        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
-        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
-        .all()
+def get_only_dining_reservation(db: Session, reservation_id: int):
+    reservation = (
+        db.query(mod_reservation)
+        .filter(mod_reservation.id_reservation == reservation_id)
+        .first()
     )
 
-    response = [
-        sch_menu.MenuWithTypeTime(
-            menu=sch_menu.MenuOut.model_validate(menu),
-            menu_type=sch_menu.MenuTypeBase.model_validate(menu_type),
-            meal_time=sch_menu.MealTimeBase.model_validate(meal_time),
-        )
-        for menu, menu_type, meal_time in menus
-    ]
-
-    return response
- """
+    return reservation
 
 
 def create_dining_reservation(
@@ -154,7 +142,9 @@ def delete_dining_reservation(db: Session, reservation_id: int):
     db_reservation = (
         db.query(mod_dining).filter(mod_dining.id_reservation == reservation_id).first()
     )
-    if db_reservation:
-        db.delete(db_reservation)
-        db.commit()
+    if db_reservation is None:
+        return None
+
+    db.delete(db_reservation)
+    db.commit()
     return db_reservation
