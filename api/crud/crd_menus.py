@@ -55,6 +55,86 @@ def get_menus(db: Session):
     return response
 
 
+def get_all_menus(db: Session):
+    menus = (
+        db.query(mod_menu, mod_menu_type, mod_meal_time)
+        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
+        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
+        .all()
+    )
+
+    response = [
+        sch_menu.MenuWithTypeTime(
+            menu=sch_menu.MenuOut.model_validate(menu),
+            menu_type=sch_menu.MenuType.model_validate(menu_type),
+            meal_time=sch_menu.MealTime.model_validate(meal_time),
+        )
+        for menu, menu_type, meal_time in menus
+    ]
+
+    return response
+
+def get_all_desayunos(db: Session):
+    menus = (
+        db.query(mod_menu, mod_menu_type, mod_meal_time)
+        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
+        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
+        .filter(mod_meal_time.meal_time == 'Desayuno')
+        .all()
+    )
+
+    response = [
+        sch_menu.MenuWithTypeTime(
+            menu=sch_menu.MenuOut.model_validate(menu),
+            menu_type=sch_menu.MenuType.model_validate(menu_type),
+            meal_time=sch_menu.MealTime.model_validate(meal_time),
+        )
+        for menu, menu_type, meal_time in menus
+    ]
+
+    return response
+
+def get_all_almuerzos(db: Session):
+    menus = (
+        db.query(mod_menu, mod_menu_type, mod_meal_time)
+        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
+        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
+        .filter(mod_meal_time.meal_time == 'Almuerzo')
+        .all()
+    )
+
+    response = [
+        sch_menu.MenuWithTypeTime(
+            menu=sch_menu.MenuOut.model_validate(menu),
+            menu_type=sch_menu.MenuType.model_validate(menu_type),
+            meal_time=sch_menu.MealTime.model_validate(meal_time),
+        )
+        for menu, menu_type, meal_time in menus
+    ]
+
+    return response
+
+def get_all_meriendas(db: Session):
+    menus = (
+        db.query(mod_menu, mod_menu_type, mod_meal_time)
+        .join(mod_menu_type, mod_menu.id_menu_type == mod_menu_type.id_menu_type)
+        .join(mod_meal_time, mod_menu.id_meal_time == mod_meal_time.id_meal_time)
+        .filter(mod_meal_time.meal_time == 'Merienda')
+        .all()
+    )
+
+    response = [
+        sch_menu.MenuWithTypeTime(
+            menu=sch_menu.MenuOut.model_validate(menu),
+            menu_type=sch_menu.MenuType.model_validate(menu_type),
+            meal_time=sch_menu.MealTime.model_validate(meal_time),
+        )
+        for menu, menu_type, meal_time in menus
+    ]
+
+    return response
+
+
 def get_only_menu(db: Session, menu_id: int):
     menu = db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
 
