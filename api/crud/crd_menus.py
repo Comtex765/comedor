@@ -30,6 +30,7 @@ def get_menu_by_id(db: Session, menu_id: int):
 
 def get_menu_price(db: Session, menu_id: int):
     menu = db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
+    
     return menu.price
 
 

@@ -13,14 +13,31 @@ EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 
 def send_email(reservation: sch_dining):
-    email_receiver = reservation.user.user.email
+    nombre = reservation['user']['user']['user_name'] + " " + reservation['user']['user']['user_last_name']
+    reservation_date = reservation['reservation']['reservation_date']
+    reservation_hour = reservation['reservation']['reservation_hour']
+    percent_discount = reservation['user']['type']['percent_discount']
+    fecha_creacion = reservation['reservation']['created_date']
+    menu_type = reservation['menu']['menu_type']['menu_type']
+    meal_time = reservation['menu']['meal_time']['meal_time']
+    id_factura = reservation['reservation']['id_reservation']
+    email_receiver = reservation['user']['user']['email']
+    reservation_hour = reservation_hour.strftime("%H:%M")
+    menu = reservation['menu']['menu']['menu_title']
+    total = reservation['reservation']['total_cost']
+    price = reservation['menu']['menu']['price']
+    
 
+    # Calculando el total con descuento
+    discount =round((price * percent_discount) / 100, 2)
+
+    #email_receiver = reservation.user.user.email
     msg = MIMEMultipart("alternative")
     msg["From"] = EMAIL_SENDER
     msg["To"] = email_receiver
-    msg["Subject"] = "Usuario Creado"
+    msg["Subject"] = "Reserva Realizada"
 
-    nombre = (
+    """ nombre = (
         reservation.user.user.user_name + " " + reservation.user.user.user_last_name
     )
     fecha_creacion = reservation.reservation.created_date
@@ -31,7 +48,7 @@ def send_email(reservation: sch_dining):
     reservation_date = reservation.reservation.reservation_date
     reservation_hour = reservation.reservation.reservation_hour
     menu_type = reservation.menu.menu_type.menu_type
-    meal_time = reservation.menu.meal_time.meal_time
+    meal_time = reservation.menu.meal_time.meal_time """
 
     body = f"""
     <html>
@@ -83,6 +100,9 @@ def send_email(reservation: sch_dining):
                 display: flex;
                 justify-content: space-between;
                 margin: 5px 0;
+            }}
+            .ticket .items #precio {{
+            padding-left: 260px;
             }}
             .ticket .total {{
                 border-top: 1px solid #ccc;
@@ -203,7 +223,7 @@ def send_email(reservation: sch_dining):
                 <div class="item">
                     <span>{menu}</span>
 
-                    <span>{sch_dining.menu.menu.price}</span>
+                    <span id="precio">{price}</span>
                 </div>
             </div>
 
@@ -214,7 +234,7 @@ def send_email(reservation: sch_dining):
                 <p>
                     <strong>Descuento:</strong>
 
-                    {sch_dining.user.type.percent_discount}
+                    {discount}
                 </p>
 
                 <p>
@@ -257,18 +277,13 @@ def send_email(reservation: sch_dining):
                 <p>
                     <strong>Tipo de Menú:</strong>
 
-                    {menu_type}
-                </p>
-
-                <p>
-                    <strong>Comida:</strong>
-
-                    {meal_time}
+                    {meal_time} - {menu_type}
                 </p>
             </div>
         </div>
     </body>
     <footer style="font-size: 10px;">
+        <br>
         Saludos,
 
         <br>

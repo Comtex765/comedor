@@ -45,8 +45,10 @@
         }
         .ticket .items .item {
             display: flex;
-            justify-content: space-between;
             margin: 5px 0;
+        }
+        .ticket .items #precio {
+            padding-left: 240px;
         }
         .ticket .total {
             border-top: 1px solid #ccc;
@@ -167,7 +169,7 @@
             <div class="item">
                 <span>{menu_title}</span>
 
-                <span>{precio}</span>
+                <span id="precio">{precio}</span>
             </div>
         </div>
 
