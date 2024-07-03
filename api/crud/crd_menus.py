@@ -159,7 +159,7 @@ def update_menu(db: Session, menu_id: int, menu: sch_menu.MenuUpdate):
     if db_menu:
         for key, value in menu.model_dump().items():
             setattr(db_menu, key, value)
-            
+
         db.commit()
         db.refresh(db_menu)
 

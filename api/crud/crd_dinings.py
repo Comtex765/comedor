@@ -102,9 +102,10 @@ def get_only_dining_reservation(db: Session, reservation_id: int):
         .filter(mod_reservation.id_reservation == reservation_id)
         .first()
     )
-    if reservation: 
+    if reservation:
         return reservation
     return None
+
 
 def create_dining_reservation(
     db: Session, reservation: sch_dinings.DiningReservationCreate
@@ -146,9 +147,9 @@ def update_dining_reservation(
 
         db.commit()
         db.refresh(db_reservation)
-        
+
         return db_reservation
-    
+
     return None
 
 

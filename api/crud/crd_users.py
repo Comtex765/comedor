@@ -124,7 +124,7 @@ def create_user(db: Session, user: sch_user.UserCreate):
 
 def update_user(db: Session, user_id: int, user: sch_user.UserUpdate):
     db_user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
-    
+
     if db_user:
         for field, value in user.model_dump(exclude_unset=True).items():
             setattr(db_user, field, value)
@@ -142,7 +142,7 @@ def update_balance(db: Session, user_id: int, balance: float):
         db.commit()
         db.refresh(db_user)
         return db_user
-    
+
     return None
 
 
