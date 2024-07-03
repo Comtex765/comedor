@@ -22,7 +22,7 @@ def read_suggestions(db: Session = Depends(get_db)):
 
     if suggests is None:
         raise HTTPException(status_code=404, detail="[]")
-    
+
     return suggests
 
 
