@@ -1,8 +1,9 @@
-from fastapi import HTTPException, APIRouter, Depends
 from api.schemas import sch_dinings as sch_dining
+
+from fastapi import HTTPException, APIRouter, Depends
 from api.crud import crd_dinings as crd_dining
-from sqlalchemy.orm import Session
 from datetime import date, time
+from sqlalchemy.orm import Session
 from api.database import get_db
 from pydantic import BaseModel
 
@@ -26,19 +27,21 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Reservation not found")
 
     if reserva.id_status == 2:
-        raise HTTPException(
-            status_code=403, detail="Reservation was cancelled time ago"
-        )
-
+        raise HTTPException(status_code=403, detail="Reservation was cancelled time ago")
+    
     if reserva.id_status == 3:
         raise HTTPException(status_code=403, detail="Reservation already used")
-
+    
     is_valid = (
         reserva.id_reservation == data.id_reserva
         and reserva.reservation_date == data.fecha_reserva
         and reserva.reservation_hour == data.hora_reserva
     )
 
+    print("COMPARATIVA\n\n\n")
+    print(reserva.id_reservation, " --- ", data.id_reserva, " ", reserva.id_reservation == data.id_reserva)
+    print(reserva.reservation_date , " --- ", data.fecha_reserva, " ", reserva.reservation_date == data.fecha_reserva)
+    print(reserva.reservation_hour , " --- ", data.hora_reserva, " ", reserva.reservation_hour == data.hora_reserva)
 
     if is_valid:
         reserva = crd_dining.get_only_dining_reservation(db, data.id_reserva)
