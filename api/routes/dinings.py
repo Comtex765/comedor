@@ -44,8 +44,10 @@ async def update_dining_reservation(
     db_reservation = crd_dining.get_dining_reservation_by_id(
         db, reservation_id=reservation_id
     )
+
     if db_reservation is None:
         raise HTTPException(status_code=404, detail="Reservation not found")
+    
     return crd_dining.update_dining_reservation(
         db, reservation_id=reservation_id, reservation=reservation
     )

@@ -124,13 +124,8 @@ def create_user(db: Session, user: sch_user.UserCreate):
 
 def update_user(db: Session, user_id: int, user: sch_user.UserUpdate):
     db_user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
+    
     if db_user:
-
-        """if user.hash_password:
-        db_user.hash_password = bcrypt.hashpw(
-            user.hash_password.encode("utf-8"), bcrypt.gensalt()
-        ).decode("utf-8")"""
-
         for field, value in user.model_dump(exclude_unset=True).items():
             setattr(db_user, field, value)
 

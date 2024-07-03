@@ -102,9 +102,9 @@ def get_only_dining_reservation(db: Session, reservation_id: int):
         .filter(mod_reservation.id_reservation == reservation_id)
         .first()
     )
-
-    return reservation
-
+    if reservation: 
+        return reservation
+    return None
 
 def create_dining_reservation(
     db: Session, reservation: sch_dinings.DiningReservationCreate
@@ -138,6 +138,7 @@ def update_dining_reservation(
         db.query(mod_dining).filter(mod_dining.id_reservation == reservation_id).first()
     )
 
+    print(f"Estaaaaaaa aes--------> {reservation}")
     if db_reservation:
         for field, value in reservation.model_dump(exclude_unset=True).items():
             setattr(db_reservation, field, value)
