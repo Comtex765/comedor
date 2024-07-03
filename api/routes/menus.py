@@ -17,7 +17,7 @@ async def create_menu(menu: sch_menu.MenuCreate, db: Session = Depends(get_db)):
 async def read_menu(menu_id: int, db: Session = Depends(get_db)):
     db_menu = crd_menu.get_menu_by_id(db=db, menu_id=menu_id)
     if db_menu is None:
-        raise HTTPException(status_code=404, detail="Menu not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_menu
 
 
@@ -26,7 +26,7 @@ async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_menus(db)
 
     if menus == []:
-        raise HTTPException(status_code=404, detail="There are not menus")
+        raise HTTPException(status_code=404, detail="[]")
 
     return menus
 
@@ -36,7 +36,7 @@ async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_all_menus(db)
 
     if menus == []:
-        raise HTTPException(status_code=404, detail="There are not menus")
+        raise HTTPException(status_code=404, detail="[]")
 
     return menus
 
@@ -46,7 +46,7 @@ async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_all_desayunos(db)
 
     if menus == []:
-        raise HTTPException(status_code=404, detail="There are not desayuno menus")
+        raise HTTPException(status_code=404, detail="[]")
 
     return menus
 
@@ -56,7 +56,7 @@ async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_all_almuerzos(db)
 
     if menus == []:
-        raise HTTPException(status_code=404, detail="There are not almuerzo menus")
+        raise HTTPException(status_code=404, detail="[]")
 
     return menus
 
@@ -66,7 +66,7 @@ async def read_menus(db: Session = Depends(get_db)):
     menus = crd_menu.get_all_meriendas(db)
 
     if menus == []:
-        raise HTTPException(status_code=404, detail="There are not merienda menus")
+        raise HTTPException(status_code=404, detail="[]")
 
     return menus
 
@@ -77,7 +77,7 @@ async def update_menu(
 ):
     db_menu = crd_menu.get_menu_by_id(db=db, menu_id=menu_id)
     if db_menu is None:
-        raise HTTPException(status_code=404, detail="Menu not found")
+        raise HTTPException(status_code=404, detail="[]")
     return crd_menu.update_menu(db=db, menu_id=menu_id, menu=menu)
 
 
@@ -85,5 +85,5 @@ async def update_menu(
 async def delete_menu(menu_id: int, db: Session = Depends(get_db)):
     db_menu = crd_menu.delete_menu(db=db, menu_id=menu_id)
     if db_menu is None:
-        raise HTTPException(status_code=404, detail="Menu not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_menu

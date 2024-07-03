@@ -13,12 +13,12 @@ async def create_card(card: sch_card.CardCreate, db: Session = Depends(get_db)):
     db_card = crd_card.get_card_by_card_id(db, card_id=card.id_user)
     if db_card:
         raise HTTPException(
-            status_code=404, detail="An user can only has 1 card associated"
+            status_code=404, detail="[]"
         )
 
     user = crd_user.get_user_by_id(db, user_id=card.id_user)
     if user is None:
-        raise HTTPException(status_code=404, detail="User not found to associate card")
+        raise HTTPException(status_code=404, detail="[]")
     return crd_card.create_card(db=db, card=card)
 
 
@@ -26,7 +26,7 @@ async def create_card(card: sch_card.CardCreate, db: Session = Depends(get_db)):
 async def read_card(card_id: int, db: Session = Depends(get_db)):
     db_card = crd_card.get_card_by_card_id(db, card_id=card_id)
     if db_card is None:
-        raise HTTPException(status_code=404, detail="Card not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_card
 
 
@@ -34,7 +34,7 @@ async def read_card(card_id: int, db: Session = Depends(get_db)):
 async def read_card(user_id: int, db: Session = Depends(get_db)):
     db_card = crd_card.get_card_by_user_id(db, user_id=user_id)
     if db_card is None:
-        raise HTTPException(status_code=404, detail="Card not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_card
 
 
@@ -50,7 +50,7 @@ async def update_card(
 ):
     db_card = crd_card.update_card(db, card_id=card_id, card=card)
     if db_card is None:
-        raise HTTPException(status_code=404, detail="Card not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_card
 
 
@@ -58,5 +58,5 @@ async def update_card(
 async def delete_card(card_id: int, db: Session = Depends(get_db)):
     db_card = crd_card.delete_card(db, card_id=card_id)
     if db_card is None:
-        raise HTTPException(status_code=404, detail="Card not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_card

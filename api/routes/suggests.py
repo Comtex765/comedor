@@ -13,18 +13,22 @@ router = APIRouter()
 def create_suggestion(
     suggest: sch_suggest.SuggestCreate, db: Session = Depends(get_db)
 ):
-    suggest.suggestion
     return crd_suggest.create_suggest(db=db, suggest=suggest)
 
 
 @router.get("", response_model=List[sch_suggest.SuggestOut])
 def read_suggestions(db: Session = Depends(get_db)):
-    return crd_suggest.get_suggests(db=db)
+    suggests = crd_suggest.get_suggests(db=db)
+
+    if suggests is None:
+        raise HTTPException(status_code=404, detail="[]")
+    
+    return suggests
 
 
 @router.get("/{suggest_id}", response_model=sch_suggest.SuggestOut)
 def read_suggestion(suggest_id: int, db: Session = Depends(get_db)):
     db_suggest = crd_suggest.get_suggest(db=db, suggest_id=suggest_id)
     if db_suggest is None:
-        raise HTTPException(status_code=404, detail="Suggestion not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_suggest
