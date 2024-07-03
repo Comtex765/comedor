@@ -1,0 +1,28 @@
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  #qrScanner {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    border: 2px solid #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #result {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+  }

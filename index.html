@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8"></meta>
 
@@ -8,73 +8,112 @@
         content="width=device-width, initial-scale=1.0"
     ></meta>
 
-    <title>QR Code Reader</title>
+    <title>
+        Lector de Códigos QR desde la Cámara
+    </title>
 
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <link
+        rel="stylesheet"
+        href="./styles.css"
+    ></link>
 </head>
 
 <body>
-    <h1>QR Code Reader</h1>
+    <h1>
+        Lector de Códigos QR desde la Cámara
+    </h1>
 
-    <div
-        id="reader"
-        style="width: 300px;"
-    ></div>
+    <div>
+        <video
+            id="qrScanner"
+            autoplay="autoplay"
+            playsinline="playsinline"
+        ></video>
+    </div>
 
-    <button id="sendDataBtn">Validate QR Code</button>
+    <div id="result"></div>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.1/dist/jsQR.min.js"></script>
 
     <script>
-        let qrCodeData = "";
-
-        function onScanSuccess(decodedText, decodedResult) {
-            // Handle the result of a successful scan
-            console.log(`Code matched = ${decodedText}`, decodedResult);
-            qrCodeData = JSON.parse(decodedText);  // Assuming the QR code contains JSON data
+        const video = document.getElementById('qrScanner');
+        const resultDiv = document.getElementById('result');
+        let isCameraOpen = true;
+      
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+          .then(stream => {
+            video.srcObject = stream;
+            video.onloadedmetadata = () => {
+              video.play();
+              startScanning(); // Comienza el escaneo al cargar la cámara
+            };
+          })
+          .catch(error => {
+            console.error('Error accessing the camera:', error);
+          });
+      
+        function startScanning() {
+          setInterval(scanQRCode, 4000); // Escanea cada 4 segundos
         }
-
-        function onScanError(errorMessage) {
-            // Handle scan error
-            console.error(errorMessage);
+      
+        function scanQRCode() {
+          if (!isCameraOpen) return; // Verifica si la cámara ya está cerrada
+          const canvasElement = document.createElement('canvas');
+          const canvas = canvasElement.getContext('2d');
+      
+          canvasElement.width = video.videoWidth;
+          canvasElement.height = video.videoHeight;
+          canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+          const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height);
+          if (code) {
+            resultDiv.innerText = 'Contenido del QR: ' + code.data;
+            sendDataToAPI(code.data);
+          }
         }
-
-        let html5QrCode = new Html5Qrcode("reader");
-
-        // Start scanning the QR code
-        html5QrCode.start(
-            { facingMode: "environment" },
-            {
-                fps: 10,
-                qrbox: 250
+      
+        function sendDataToAPI(qrData) {
+          const url = 'http://localhost:8000/qr_codes/validate_qr'; // Reemplaza con la URL de tu API
+      
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
             },
-            onScanSuccess,
-            onScanError
-        ).catch(err => {
-            console.error(`Unable to start scanning, error: ${err}`);
-        });
-
-        document.getElementById("sendDataBtn").addEventListener("click", function() {
-            if (qrCodeData) {
-                fetch('http://localhost:8000/validate_qr', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(qrCodeData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    if (data.valid) {
-                        alert("QR Code is valid!");
-                    } else {
-                        alert("QR Code is invalid.");
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            } else {
-                alert("No QR code data to send.");
+            body: qrData
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
             }
-        });
+            return response.json();
+          })
+          .then(data => {
+            console.log('Respuesta de la API:', data);
+            const isValid = data.valid; // Accede al valor 'valid' de la respuesta
+            console.log(isValid)
+            if (isValid) {
+                alert("Código QR validado");
+            } else {
+                alert(data.detail);
+            }
+            })
+            .catch(error => {
+            console.error('Error al realizar la solicitud a la API:', error.status);
+
+            // Verificar si el error tiene detalles (mensaje de error específico de la API)
+            if (error.response.status === 404) {
+                showAlert('Error 404: No se encontró la reserva - ' + error.response.data.detail);
+            } else if (error.response.status === 403) {
+                showAlert('Error 403: ' + error.response.data.detail);
+            } else {
+                showAlert('Error de red u otro error: ' + error.message);
+            }
+            });
+
+            function showAlert(message) {
+            alert(message);
+            }
+        }
     </script>
 </body>
 </html>

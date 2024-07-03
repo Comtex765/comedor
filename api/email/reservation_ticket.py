@@ -318,12 +318,11 @@ def send_email(reservation: sch_dining):
         # Enviar el correo
         server.sendmail(EMAIL_SENDER, email_receiver, msg.as_string())
         print(f"Correo enviado correctamente a {email_receiver}")
-        
-        eliminar_archivo(F"./api/img/{id_factura}_qrcode.png")
+
+        eliminar_archivo(f"./api/img/{id_factura}_qrcode.png")
 
     except Exception as e:
         print(f"Error al enviar el correo a {email_receiver}: {str(e)}")
 
     finally:
         server.quit()
-

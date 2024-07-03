@@ -11,7 +11,7 @@ class DiningReservationBase(BaseModel):
     reservation_date: date
     reservation_hour: time
 
-    @field_validator('reservation_hour')
+    @field_validator("reservation_hour")
     def format_reservation_hour(cls, value):
         # Asegurar que los segundos siempre sean 00
         formatted_value = value.replace(second=0, microsecond=0)

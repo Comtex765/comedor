@@ -118,7 +118,9 @@ def create_dining_reservation(
     discount = crd_user.get_user_discount(db=db, user_id=db_reservation.id_user)
 
     db_reservation.total_cost = float(price) * (100 - discount) / 100
-    db_reservation.reservation_hour = db_reservation.reservation_hour.strftime("%H:%M:%S")
+    db_reservation.reservation_hour = db_reservation.reservation_hour.strftime(
+        "%H:%M:%S"
+    )
 
     db.add(db_reservation)
     db.commit()
