@@ -1,5 +1,7 @@
 from api.schemas.sch_dinings import ReservationWhole as sch_dining
 from email.mime.multipart import MIMEMultipart
+from api.utils.qr_generator import generar_qr
+from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from dotenv import load_dotenv
 
@@ -31,6 +33,8 @@ def send_email(reservation: sch_dining):
     total = reservation["reservation"]["total_cost"]
     price = reservation["menu"]["menu"]["price"]
 
+    generar_qr(nombre, id_factura, menu, reservation_hour, reservation_date)
+
     # Calculando el total con descuento
     discount = round((price * percent_discount) / 100, 2)
 
@@ -39,19 +43,6 @@ def send_email(reservation: sch_dining):
     msg["From"] = EMAIL_SENDER
     msg["To"] = email_receiver
     msg["Subject"] = "Reserva Realizada"
-
-    """ nombre = (
-        reservation.user.user.user_name + " " + reservation.user.user.user_last_name
-    )
-    fecha_creacion = reservation.reservation.created_date
-    id_factura = reservation.reservation.id_reservation
-    menu = reservation.menu.menu.menu_title
-    total = reservation.reservation.total_cost
-
-    reservation_date = reservation.reservation.reservation_date
-    reservation_hour = reservation.reservation.reservation_hour
-    menu_type = reservation.menu.menu_type.menu_type
-    meal_time = reservation.menu.meal_time.meal_time """
 
     body = f"""
     <html>
@@ -105,7 +96,7 @@ def send_email(reservation: sch_dining):
                 margin: 5px 0;
             }}
             .ticket .items #precio {{
-            padding-left: 260px;
+            padding-left: 230px;
             }}
             .ticket .total {{
                 border-top: 1px solid #ccc;
@@ -153,31 +144,30 @@ def send_email(reservation: sch_dining):
             }}
         </style>
     </head>
-    <header>
-        <center>
-            <h1>¡Hola!</h1>
-        </center>
+ <header>
+    <center>
+        <h1>¡Hola!</h1>
+    </center>
 
-        <p>
-            Bienvenido/a
+    <p>
+        Bienvenido/a
 
-            <b style="color: coral;">{nombre}</b>
-        </p>
+        <b style="color: coral;">{nombre}</b>
+    </p>
 
-        <p>
-            Te informamos que se ha concretado exitosamente tu reserva en Comedor ESPOCH.
+    <p>
+        Te informamos que se ha concretado exitosamente tu reserva en Comedor ESPOCH.
 
-            <br>
-            <br>
-            A continuacón te mostramos tu factura electrónica junto a los detalles de tu reserva.
+        <br>
+        <br>
+        A continuacón te mostramos tu factura electrónica junto a los detalles de tu reserva.
 
-            <br>
+        <br>
 
-            <p style="font-style: italic; font-size: 20px;">
-                ¡Provecho!
-            </p>
-        </p>
+        <p style="font-style: italic; font-size: 20px;">¡Provecho!</p>
+    </p>
     </header>
+
     <body>
         <div class="ticket">
             <h1>Factura de Compra</h1>
@@ -282,9 +272,21 @@ def send_email(reservation: sch_dining):
 
                     {meal_time} - {menu_type}
                 </p>
+
+                <p style="border-top: 1px solid #ccc; margin-top: 20px;">
+                    <center style="margin-top:20px; margin-bottom: 0;">
+                        <h3 style="margin: 0;">Código QR</h3>
+                    </center>
+
+                    <img
+                        src="cid:qr_code"
+                        style="max-width: 300px;"
+                    >
+                </p>
             </div>
         </div>
     </body>
+
     <footer style="font-size: 10px;">
         <br>
         Saludos,
@@ -299,6 +301,12 @@ def send_email(reservation: sch_dining):
 
     # Adjuntar el contenido HTML al mensaje
     msg.attach(mime_text)
+
+    # Adjuntar la imagen del código QR
+    with open(f"./api/img/{id_factura}_qrcode.png", "rb") as qr_file:
+        img = MIMEImage(qr_file.read())
+        img.add_header("Content-ID", "<qr_code>")
+        msg.attach(img)
 
     # Conectar al servidor SMTP de Gmail
     try:
