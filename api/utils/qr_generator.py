@@ -9,6 +9,7 @@ def generar_qr(nombre, id_reserva, menu, hora_reserva, fecha_reserva):
         "id_reserva": id_reserva,
         "menu": menu,
         "hora_reserva": hora_reserva,
+        "fecha_reserva": fecha_reserva,
     }
 
     # Convertir JSON a cadena

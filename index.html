@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    ></meta>
+
+    <title>QR Code Reader</title>
+
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+</head>
+
+<body>
+    <h1>QR Code Reader</h1>
+
+    <div
+        id="reader"
+        style="width: 300px;"
+    ></div>
+
+    <button id="sendDataBtn">Validate QR Code</button>
+
+    <script>
+        let qrCodeData = "";
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // Handle the result of a successful scan
+            console.log(`Code matched = ${decodedText}`, decodedResult);
+            qrCodeData = JSON.parse(decodedText);  // Assuming the QR code contains JSON data
+        }
+
+        function onScanError(errorMessage) {
+            // Handle scan error
+            console.error(errorMessage);
+        }
+
+        let html5QrCode = new Html5Qrcode("reader");
+
+        // Start scanning the QR code
+        html5QrCode.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            onScanSuccess,
+            onScanError
+        ).catch(err => {
+            console.error(`Unable to start scanning, error: ${err}`);
+        });
+
+        document.getElementById("sendDataBtn").addEventListener("click", function() {
+            if (qrCodeData) {
+                fetch('http://localhost:8000/validate_qr', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(qrCodeData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.valid) {
+                        alert("QR Code is valid!");
+                    } else {
+                        alert("QR Code is invalid.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            } else {
+                alert("No QR code data to send.");
+            }
+        });
+    </script>
+</body>
+</html>

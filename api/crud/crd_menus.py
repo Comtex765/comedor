@@ -155,11 +155,14 @@ def create_menu(db: Session, menu: sch_menu.MenuCreate):
 
 def update_menu(db: Session, menu_id: int, menu: sch_menu.MenuUpdate):
     db_menu = db.query(mod_menu).filter(mod_menu.id_menu == menu_id).first()
+
     if db_menu:
         for key, value in menu.model_dump().items():
             setattr(db_menu, key, value)
+            
         db.commit()
         db.refresh(db_menu)
+
     return db_menu
 
 

@@ -137,12 +137,17 @@ def update_dining_reservation(
     db_reservation = (
         db.query(mod_dining).filter(mod_dining.id_reservation == reservation_id).first()
     )
+
     if db_reservation:
-        for key, value in reservation.model_dump(exclude_unset=True).items():
-            setattr(db_reservation, key, value)
+        for field, value in reservation.model_dump(exclude_unset=True).items():
+            setattr(db_reservation, field, value)
+
         db.commit()
         db.refresh(db_reservation)
-    return db_reservation
+        
+        return db_reservation
+    
+    return None
 
 
 def delete_dining_reservation(db: Session, reservation_id: int):

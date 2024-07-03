@@ -28,23 +28,3 @@ def read_suggestion(suggest_id: int, db: Session = Depends(get_db)):
     if db_suggest is None:
         raise HTTPException(status_code=404, detail="Suggestion not found")
     return db_suggest
-
-
-@router.put("/{suggest_id}", response_model=sch_suggest.SuggestOut)
-def update_suggestion(
-    suggest_id: int, suggest: sch_suggest.SuggestUpdate, db: Session = Depends(get_db)
-):
-    db_suggest = crd_suggest.update_suggest(
-        db=db, suggest_id=suggest_id, suggest_update=suggest
-    )
-    if db_suggest is None:
-        raise HTTPException(status_code=404, detail="Suggestion not found")
-    return db_suggest
-
-
-@router.delete("/{suggest_id}", response_model=sch_suggest.SuggestOut)
-def delete_suggestion(suggest_id: int, db: Session = Depends(get_db)):
-    db_suggest = crd_suggest.delete_suggest(db=db, suggest_id=suggest_id)
-    if db_suggest is None:
-        raise HTTPException(status_code=404, detail="Suggestion not found")
-    return db_suggest

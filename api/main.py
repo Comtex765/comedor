@@ -1,4 +1,4 @@
-from api.routes import users, cards, login, menus, suggests, dinings
+from api.routes import users, cards, login, menus, suggests, dinings, qr_codes
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
@@ -24,3 +24,4 @@ app.include_router(cards.router, prefix="/cards", tags=["cards"])
 app.include_router(menus.router, prefix="/menus", tags=["menus"])
 app.include_router(dinings.router, prefix="/dinings", tags=["dinings"])
 app.include_router(suggests.router, prefix="/suggests", tags=["suggests"])
+app.include_router(qr_codes.router, prefix="/qr_codes", tags=["qr_codes"])

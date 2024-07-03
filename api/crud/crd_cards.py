@@ -25,13 +25,17 @@ def get_cards(db: Session):
 
 def update_card(db: Session, card_id: int, card: sch_card.CardUpdate):
     db_card = db.query(mod_card).filter(mod_card.id_card == card_id).first()
-    if db_card is None:
-        return None
-    for key, value in card.model_dump().items():
-        setattr(db_card, key, value)
-    db.commit()
-    db.refresh(db_card)
-    return db_card
+
+    if db_card:
+        for field, value in card.model_dump(exclude_unset=True).items():
+            setattr(db_card, field, value)
+
+        db.commit()
+        db.refresh(db_card)
+        
+        return db_card
+    
+    return None
 
 
 def delete_card(db: Session, card_id: int):
