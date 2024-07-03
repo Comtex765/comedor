@@ -69,9 +69,12 @@ async def read_user(user_email: str, db: Session = Depends(get_db)):
 @router.get("", response_model=List[sch_user.UserWithType])
 async def read_users(
     db: Session = Depends(get_db),
-    current_user: sch_token.UserToken = Depends(get_current_user),
+    current_user: sch_token.UserToken = Depends(get_current_user)
 ):
-    if current_user.type == 0:
+    print('\n\n-------->', type(current_user))
+    
+
+    if current_user.id_user_type == 0:
         users = crd_user.get_users(db)
         return users
     else:

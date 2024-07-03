@@ -5,7 +5,6 @@ from api.models import Menu as mod_menu
 from sqlalchemy.orm import Session
 
 
-
 def convert_menu_to_menu_with_time_type(menu):
     if not menu:
         return None

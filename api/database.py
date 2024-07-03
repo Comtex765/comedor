@@ -26,17 +26,15 @@ print(
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(
-    bind=engine, class_=Session, expire_on_commit=False
-)
+SessionLocal = sessionmaker(bind=engine, class_=Session, expire_on_commit=False)
 
 
-async def get_db():
+def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
-        await db.close()  # Ensure that db.close() is awaited
+        db.close()
 
 
 def test_db_connection():
