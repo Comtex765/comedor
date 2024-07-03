@@ -23,13 +23,13 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
     reserva = crd_dining.get_only_dining_reservation(db, data.id_reserva)
 
     if reserva is None:
-        return {"valid": False, "detail": "Reservation not found"}
+        return {"valid": False, "detail": "No se encontró ninguna reserva asociada"}
 
     if reserva.id_status == 2:
-        return {"valid": False, "detail": "Reservation was cancelled time ago"}
+        return {"valid": False, "detail": "La reserva fue cancelada con anterioridad"}
 
     if reserva.id_status == 3:
-        return {"valid": False, "detail": "Reservation already used"}
+        return {"valid": False, "detail": "Ya fue utilizada la reserva"}
 
     is_valid = (
         reserva.id_reservation == data.id_reserva
@@ -37,7 +37,7 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         and reserva.reservation_hour == data.hora_reserva
     )
 
-    print("COMPARATIVA\n\n\n")
+    """ print("COMPARATIVA\n\n\n")
     print(
         reserva.id_reservation,
         " --- ",
@@ -58,7 +58,7 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         data.hora_reserva,
         " ",
         reserva.reservation_hour == data.hora_reserva,
-    )
+    ) """
 
     if is_valid:
         reserva = crd_dining.get_only_dining_reservation(db, data.id_reserva)
@@ -80,4 +80,4 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
             db, reservation_id=reserva.id_reservation, reservation=reservation_dict
         )
 
-    return {"valid": is_valid}
+    return {"valid": True , "detail": "Reserva validada correctamente"}
