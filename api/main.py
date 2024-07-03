@@ -1,5 +1,6 @@
 from api.routes import users, cards, login, menus, suggests, dinings, qr_codes
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer
 from fastapi import FastAPI
 
 app = FastAPI(title="Comtex", version="1.0.0")
@@ -11,6 +12,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @app.get("/")

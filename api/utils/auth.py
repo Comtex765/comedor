@@ -1,7 +1,13 @@
 from fastapi.security import OAuth2PasswordBearer
 from api.crud.crd_users import get_user_by_email
+from api.schemas import sch_tokens as sch_token
+from sqlalchemy.orm import Session
+
+from fastapi import Depends, HTTPException
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
+
+from api.database import get_db
 from dotenv import load_dotenv
 from typing import Optional
 
@@ -47,3 +53,29 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
     return encoded_jwt
+
+
+async def get_current_user(
+    db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
+):
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("email")
+        type: int = payload.get("type")
+        if email is None or type is None:
+            raise credentials_exception
+        token_data = sch_token.TokenData(email=email, type=type)
+    except Exception as e:
+        print(
+            f"💔  Error en lo de token: {e} 💔\n")
+        
+
+    user = await get_user_by_email(db, email=token_data.email)
+    if user is None or user.type != 0:
+        raise credentials_exception
+    return user

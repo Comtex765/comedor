@@ -1,5 +1,7 @@
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
 from colorama import Fore, Style
 from dotenv import load_dotenv
 
@@ -24,16 +26,17 @@ print(
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(
+    bind=engine, class_=Session, expire_on_commit=False
+)
 
 
-def get_db():
+async def get_db():
     db = SessionLocal()
-
     try:
         yield db
     finally:
-        db.close()
+        await db.close()  # Ensure that db.close() is awaited
 
 
 def test_db_connection():

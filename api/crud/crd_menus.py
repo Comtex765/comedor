@@ -5,6 +5,7 @@ from api.models import Menu as mod_menu
 from sqlalchemy.orm import Session
 
 
+
 def convert_menu_to_menu_with_time_type(menu):
     if not menu:
         return None
@@ -147,9 +148,9 @@ def get_only_menu(db: Session, menu_id: int):
 def create_menu(db: Session, menu: sch_menu.MenuCreate):
     db_menu = mod_menu(**menu.model_dump())
 
-    #print(menu)
+    # print(menu)
     db_menu.status = True
-    
+
     db.add(db_menu)
     db.commit()
     db.refresh(db_menu)

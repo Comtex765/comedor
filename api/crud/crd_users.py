@@ -3,6 +3,7 @@ from api.models import UserType as mod_user_type
 from api.schemas import sch_users as sch_user
 from api.models import User as mod_user
 from sqlalchemy.orm import Session
+
 from datetime import datetime
 
 import bcrypt

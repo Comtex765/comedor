@@ -8,6 +8,7 @@ from api.schemas import sch_dinings as sch_dinings
 from api.crud import crd_menus as crd_menu
 from api.crud import crd_users as crd_user
 from sqlalchemy.orm import Session
+
 from datetime import datetime
 
 
@@ -136,7 +137,9 @@ def create_dining_reservation(
 
 
 def update_dining_reservation(
-    db: Session, reservation_id: int, reservation: sch_dinings.DiningReservationUpdate
+    db: Session,
+    reservation_id: int,
+    reservation: sch_dinings.DiningReservationUpdate,
 ):
     db_reservation = (
         db.query(mod_dining).filter(mod_dining.id_reservation == reservation_id).first()

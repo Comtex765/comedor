@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from api.schemas import sch_dinings as sch_dining
 from api.crud import crd_dinings as crd_dining
 from sqlalchemy.orm import Session
+
 from api.database import get_db
 from typing import List
 
@@ -17,7 +18,9 @@ async def read_dining_reservations(db: Session = Depends(get_db)):
 @router.get(
     "/reservations/{reservation_id}", response_model=sch_dining.ReservationWhole
 )
-async def read_dining_reservation(reservation_id: int, db: Session = Depends(get_db)):
+async def read_dining_reservation(
+    reservation_id: int, db: Session = Depends(get_db)
+):
     reservation = crd_dining.get_dining_reservation_by_id(
         db, reservation_id=reservation_id
     )
@@ -56,7 +59,9 @@ async def update_dining_reservation(
 @router.delete(
     "/reservations/{reservation_id}", response_model=sch_dining.DiningReservationOut
 )
-async def delete_dining_reservation(reservation_id: int, db: Session = Depends(get_db)):
+async def delete_dining_reservation(
+    reservation_id: int, db: Session = Depends(get_db)
+):
     db_reservation = crd_dining.delete_dining_reservation(
         db, reservation_id=reservation_id
     )

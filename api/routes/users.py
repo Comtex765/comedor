@@ -3,8 +3,11 @@ from api.schemas import sch_users as sch_user
 from api.crud import crd_users as crd_user
 from api.crud import crd_cards as crd_card
 from api.utils.cedula import check_cedula
+from api.utils.auth import get_current_user
 from sqlalchemy.orm import Session
+
 from api.database import get_db
+from api.schemas import sch_tokens as sch_token
 from typing import List
 
 router = APIRouter()
@@ -64,9 +67,16 @@ async def read_user(user_email: str, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=List[sch_user.UserWithType])
-async def read_users(db: Session = Depends(get_db)):
-    users = crd_user.get_users(db)
-    return users
+async def read_users(
+    db: Session = Depends(get_db),
+    current_user: sch_token.UserToken = Depends(get_current_user),
+):
+    if current_user.type == 0:
+        users = crd_user.get_users(db)
+        return users
+    else:
+        # Manejar el caso donde el usuario no tiene acceso
+        return {"Hey Fred": "You should'nt be here"}
 
 
 @router.put("/{user_id}", response_model=sch_user.UserOut)

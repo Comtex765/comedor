@@ -7,4 +7,10 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    email: Optional[str] = None
+    email: str
+    type: int
+
+
+class UserToken(BaseModel):
+    email: str
+    type: int
