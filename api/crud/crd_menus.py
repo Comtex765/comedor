@@ -146,7 +146,7 @@ def get_only_menu(db: Session, menu_id: int):
 
 def create_menu(db: Session, menu: sch_menu.MenuCreate):
     db_menu = mod_menu(**menu.model_dump())
-    db_menu.status = True
+
     db.add(db_menu)
     db.commit()
     db.refresh(db_menu)
