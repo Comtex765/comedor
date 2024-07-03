@@ -13,6 +13,7 @@ load_dotenv()
 
 EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+IVA = float(os.getenv("IVA"))
 
 
 def send_email(reservation: sch_dining):
@@ -37,7 +38,15 @@ def send_email(reservation: sch_dining):
     generar_qr(nombre, id_factura, menu, reservation_hour, str(reservation_date))
 
     # Calculando el total con descuento
-    discount = round((price * percent_discount) / 100, 2)
+    discount = (price * percent_discount) / 100
+    discount = "{:.2f}".format(discount)
+
+    iva = "{:.2f}".format(price * IVA)
+
+    subtotal = "{:.2f}".format(price)
+
+    price *= 1 - IVA
+    price = "{:.2f}".format(price)
 
     # email_receiver = reservation.user.user.email
     msg = MIMEMultipart("alternative")
@@ -217,7 +226,7 @@ def send_email(reservation: sch_dining):
                 <div class="item">
                     <span>{menu}</span>
 
-                    <span id="precio">{price}</span>
+                    <span id="precio">${price}</span>
                 </div>
             </div>
 
@@ -226,15 +235,26 @@ def send_email(reservation: sch_dining):
                 style="font-size: 18px;"
             >
                 <p>
+                    <strong>IVA {int(IVA * 100)}%:</strong>
+
+                    ${iva}
+                </p>
+                <p>
+                    <strong>Subotal:</strong>
+
+                    ${subtotal}
+                </p>
+
+                <p>
                     <strong>Descuento:</strong>
 
-                    {discount}
+                    ${discount}
                 </p>
 
                 <p>
                     <strong>Total:</strong>
 
-                    {total}
+                    ${total}
                 </p>
             </div>
 

@@ -80,4 +80,4 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
             db, reservation_id=reserva.id_reservation, reservation=reservation_dict
         )
 
-    return {"valid": True , "detail": "Reserva validada correctamente"}
+    return {"valid": True, "detail": "Reserva validada correctamente"}
