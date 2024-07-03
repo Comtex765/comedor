@@ -32,9 +32,9 @@ def update_card(db: Session, card_id: int, card: sch_card.CardUpdate):
 
         db.commit()
         db.refresh(db_card)
-        
+
         return db_card
-    
+
     return None
 
 

@@ -24,11 +24,13 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Reservation not found")
 
     if reserva.id_status == 2:
-        raise HTTPException(status_code=403, detail="Reservation was cancelled time ago")
-    
+        raise HTTPException(
+            status_code=403, detail="Reservation was cancelled time ago"
+        )
+
     if reserva.id_status == 3:
         raise HTTPException(status_code=403, detail="Reservation already used")
-    
+
     is_valid = (
         reserva.id_reservation == data.id_reserva
         and reserva.reservation_date == data.fecha_reserva
