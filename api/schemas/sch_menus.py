@@ -7,7 +7,6 @@ class MenuBase(BaseModel):
     id_meal_time: int
     menu_title: str
     menu_description: str
-    status: bool
     price: float
 
 
@@ -21,6 +20,7 @@ class MenuUpdate(MenuBase):
 
 class MenuOut(MenuBase):
     id_menu: int
+    status: bool
 
     class Config:
         from_attributes = True
