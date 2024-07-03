@@ -1,4 +1,5 @@
 from api.schemas.sch_dinings import ReservationWhole as sch_dining
+from api.utils.qr_generator import eliminar_archivo
 from email.mime.multipart import MIMEMultipart
 from api.utils.qr_generator import generar_qr
 from email.mime.image import MIMEImage
@@ -317,9 +318,12 @@ def send_email(reservation: sch_dining):
         # Enviar el correo
         server.sendmail(EMAIL_SENDER, email_receiver, msg.as_string())
         print(f"Correo enviado correctamente a {email_receiver}")
+        
+        eliminar_archivo(F"./api/img/{id_factura}_qrcode.png")
 
     except Exception as e:
         print(f"Error al enviar el correo a {email_receiver}: {str(e)}")
 
     finally:
         server.quit()
+

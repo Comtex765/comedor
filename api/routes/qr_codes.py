@@ -1,6 +1,5 @@
-from api.schemas import sch_dinings as sch_dining
-
 from fastapi import HTTPException, APIRouter, Depends
+from api.schemas import sch_dinings as sch_dining
 from api.crud import crd_dinings as crd_dining
 from datetime import date, time
 from sqlalchemy.orm import Session

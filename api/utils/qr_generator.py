@@ -1,5 +1,7 @@
+from pathlib import Path
 import qrcode
 import json
+import os
 
 
 def generar_qr(nombre, id_reserva, menu, hora_reserva, fecha_reserva):
@@ -34,3 +36,16 @@ def generar_qr(nombre, id_reserva, menu, hora_reserva, fecha_reserva):
     img.save(filename)
 
     print(f"Código QR generado y guardado como {filename}")
+
+
+def eliminar_archivo(ruta_archivo):
+    archivo = Path(ruta_archivo)
+    try:
+        archivo.unlink()
+        print(f"Archivo QR {archivo} eliminado exitosamente")
+    except FileNotFoundError:
+        print(f"El archivo QR {archivo} YA no existe")
+    except PermissionError:
+        print(f"No tienes permiso para eliminar el archivo {archivo}")
+    except Exception as e:
+        print(f"Error al eliminar el archivo {archivo}: {e}")

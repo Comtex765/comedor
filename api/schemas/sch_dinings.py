@@ -1,7 +1,7 @@
 from api.schemas.sch_menus import MenuWithTypeTime
 from api.schemas.sch_users import UserWithType
 from datetime import date, time, datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class DiningReservationBase(BaseModel):
@@ -10,6 +10,12 @@ class DiningReservationBase(BaseModel):
 
     reservation_date: date
     reservation_hour: time
+
+    @field_validator('reservation_hour')
+    def format_reservation_hour(cls, value):
+        # Asegurar que los segundos siempre sean 00
+        formatted_value = value.replace(second=0, microsecond=0)
+        return formatted_value
 
 
 class DiningReservationCreate(DiningReservationBase):
