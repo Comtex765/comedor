@@ -22,7 +22,7 @@ async def read_dining_reservation(reservation_id: int, db: Session = Depends(get
         db, reservation_id=reservation_id
     )
     if reservation is None:
-        raise HTTPException(status_code=404, detail="Reservation not found")
+        raise HTTPException(status_code=404, detail="[]")
     return reservation
 
 
@@ -46,7 +46,7 @@ async def update_dining_reservation(
     )
 
     if db_reservation is None:
-        raise HTTPException(status_code=404, detail="Reservation not found")
+        raise HTTPException(status_code=404, detail="[]")
 
     return crd_dining.update_dining_reservation(
         db, reservation_id=reservation_id, reservation=reservation
@@ -61,5 +61,5 @@ async def delete_dining_reservation(reservation_id: int, db: Session = Depends(g
         db, reservation_id=reservation_id
     )
     if db_reservation is None:
-        raise HTTPException(status_code=404, detail="Reservation not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_reservation

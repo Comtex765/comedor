@@ -33,7 +33,7 @@ async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
 async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db)):
     user = crd_user.get_user_by_email(db, email=balance.email)
     if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="[]")
 
     card = crd_card.get_card_by_user_id(
         db, user_id=crd_user.get_user_id_by_email(db, email=balance.email)
@@ -51,7 +51,7 @@ async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db
 async def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crd_user.get_user_by_id(db, user_id=user_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_user
 
 
@@ -59,7 +59,7 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
 async def read_user(user_email: str, db: Session = Depends(get_db)):
     db_user = crd_user.get_user_by_email(db, email=user_email)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_user
 
 
@@ -75,7 +75,7 @@ async def update_user(
 ):
     db_user = crd_user.update_user(db, user_id=user_id, user=user)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_user
 
 
@@ -83,5 +83,5 @@ async def update_user(
 async def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crd_user.delete_user(db, user_id=user_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="[]")
     return db_user
