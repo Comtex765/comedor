@@ -15,7 +15,7 @@ class MenuCreate(MenuBase):
 
 
 class MenuUpdate(MenuBase):
-    pass
+    status: bool
 
 
 class MenuOut(MenuBase):
