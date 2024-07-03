@@ -118,6 +118,7 @@ def create_dining_reservation(
     discount = crd_user.get_user_discount(db=db, user_id=db_reservation.id_user)
 
     db_reservation.total_cost = float(price) * (100 - discount) / 100
+    db_reservation.reservation_hour = db_reservation.reservation_hour.strftime("%H:%M:%S")
 
     db.add(db_reservation)
     db.commit()
@@ -139,7 +140,8 @@ def update_dining_reservation(
         db.query(mod_dining).filter(mod_dining.id_reservation == reservation_id).first()
     )
 
-    print(f"Estaaaaaaa aes--------> {reservation}")
+    print(f"Estaaaaaaa aes--------> {type(reservation)}")
+
     if db_reservation:
         for field, value in reservation.model_dump(exclude_unset=True).items():
             setattr(db_reservation, field, value)

@@ -33,7 +33,7 @@ def send_email(reservation: sch_dining):
     total = reservation["reservation"]["total_cost"]
     price = reservation["menu"]["menu"]["price"]
 
-    generar_qr(nombre, id_factura, menu, reservation_hour, reservation_date)
+    generar_qr(nombre, id_factura, menu, reservation_hour, str(reservation_date))
 
     # Calculando el total con descuento
     discount = round((price * percent_discount) / 100, 2)
