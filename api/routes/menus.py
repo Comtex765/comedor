@@ -78,7 +78,6 @@ async def update_menu(
     db_menu = crd_menu.get_menu_by_id(db=db, menu_id=menu_id)
     if db_menu is None:
         raise HTTPException(status_code=404, detail="Menu not found")
-
     return crd_menu.update_menu(db=db, menu_id=menu_id, menu=menu)
 
 
