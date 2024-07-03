@@ -15,9 +15,10 @@ DB_DIALECT = os.getenv("DB_DIALECT")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_USER = os.getenv("DB_USER")
 
-SQLALCHEMY_DATABASE_URL = "{}://{}:{}@[{}]/{}".format(
+SQLALCHEMY_DATABASE_URL = "postgresql://comtex:QzyIZp2TZnKQeiGYcOgfhOV7ly2l1sxq@dpg-cq2s1gbqf0us73d6a79g-a.oregon-postgres.render.com/comedor"
+""" "{}://{}:{}@[{}]/{}".format(
     DB_DIALECT, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME
-)
+) """
 
 print(
     f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  DataBase URL connection ==> {SQLALCHEMY_DATABASE_URL} ❤️",
