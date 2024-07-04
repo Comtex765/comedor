@@ -21,7 +21,7 @@ SQLALCHEMY_DATABASE_URL = "{}://{}:{}@[{}]/{}".format(
     DB_DIALECT, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME
 )
 
-#print(f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  DataBase URL connection ==> {SQLALCHEMY_DATABASE_URL} ❤️")
+# print(f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  DataBase URL connection ==> {SQLALCHEMY_DATABASE_URL} ❤️")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, class_=Session, expire_on_commit=False)
