@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from api.schemas import sch_users as sch_user
+from api.utils.auth import get_current_user
 from api.crud import crd_users as crd_user
 from api.crud import crd_cards as crd_card
 from api.utils.cedula import check_cedula
-from api.utils.auth import get_current_user
+
 from sqlalchemy.orm import Session
 
 from api.database import get_db
@@ -51,7 +52,10 @@ async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db
 
 
 @router.get("/id/{user_id}", response_model=sch_user.UserWithType)
-async def read_user(user_id: int, db: Session = Depends(get_db)):
+async def read_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+):
     db_user = crd_user.get_user_by_id(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="[]")
@@ -59,7 +63,10 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/email/{user_email}", response_model=sch_user.UserWithType)
-async def read_user(user_email: str, db: Session = Depends(get_db)):
+async def read_user(
+    user_email: str,
+    db: Session = Depends(get_db),
+):
     db_user = crd_user.get_user_by_email(db, email=user_email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="[]")
@@ -69,17 +76,13 @@ async def read_user(user_email: str, db: Session = Depends(get_db)):
 @router.get("", response_model=List[sch_user.UserWithType])
 async def read_users(
     db: Session = Depends(get_db),
-    current_user: sch_token.UserToken = Depends(get_current_user)
+    current_user: sch_token.UserToken = Depends(get_current_user),
 ):
-    print('\n\n-------->', type(current_user))
-    
-
     if current_user.id_user_type == 0:
         users = crd_user.get_users(db)
         return users
     else:
-        # Manejar el caso donde el usuario no tiene acceso
-        return {"Hey Fred": "You should'nt be here"}
+        return {"Hey Nigell": "You should'nt be here"}
 
 
 @router.put("/{user_id}", response_model=sch_user.UserOut)

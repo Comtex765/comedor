@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
+from api.schemas import sch_tokens as sch_token
 from api.schemas import sch_menus as sch_menu
+from api.utils.auth import get_current_user
 from api.crud import crd_menus as crd_menu
 from sqlalchemy.orm import Session
 
@@ -23,23 +25,36 @@ async def read_menu(menu_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=List[sch_menu.MenuWithTypeTime])
-async def read_menus(db: Session = Depends(get_db)):
-    menus = crd_menu.get_menus(db)
+async def read_menus(
+    db: Session = Depends(get_db),
+    current_user: sch_token.UserToken = Depends(get_current_user),
+):
+    if current_user.id_user_type == 0:
+        menus = crd_menu.get_menus(db)
 
-    if menus == []:
-        raise HTTPException(status_code=404, detail="[]")
+        if menus == []:
+            raise HTTPException(status_code=404, detail="[]")
 
-    return menus
+        return menus
+    else:
+        return {"Hey Nigell": "You should'nt be here"}
+    
 
 
 @router.get("/all/", response_model=List[sch_menu.MenuWithTypeTime])
-async def read_menus(db: Session = Depends(get_db)):
-    menus = crd_menu.get_all_menus(db)
+async def read_menus(
+    db: Session = Depends(get_db),
+    current_user: sch_token.UserToken = Depends(get_current_user),
+):
+    if current_user.id_user_type == 0:
+        menus = crd_menu.get_all_menus(db)
 
-    if menus == []:
-        raise HTTPException(status_code=404, detail="[]")
+        if menus == []:
+            raise HTTPException(status_code=404, detail="[]")
 
-    return menus
+        return menus
+    else:
+        return {"Hey Nigell": "You should'nt be here"}
 
 
 @router.get("/desayunos/", response_model=List[sch_menu.MenuWithTypeTime])

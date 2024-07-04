@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from api.schemas import sch_dinings as sch_dining
+from api.schemas import sch_tokens as sch_token
 from api.crud import crd_dinings as crd_dining
+from api.utils.auth import get_current_user
 from sqlalchemy.orm import Session
 
 from api.database import get_db
@@ -9,15 +11,17 @@ from typing import List
 router = APIRouter()
 
 
-@router.get("/reservations/", response_model=List[sch_dining.ReservationWhole])
-async def read_dining_reservations(db: Session = Depends(get_db)):
-    reservations = crd_dining.get_dining_reservations(db)
-    return reservations
+@router.get("/", response_model=List[sch_dining.ReservationWhole])
+async def read_dining_reservations(db: Session = Depends(get_db),
+    current_user: sch_token.UserToken = Depends(get_current_user),):
+    if current_user.id_user_type == 0:
+        reservations = crd_dining.get_dining_reservations(db)
+        return reservations
+    else:
+        return {"Hey Nigell": "You should'nt be here"}
 
 
-@router.get(
-    "/reservations/{reservation_id}", response_model=sch_dining.ReservationWhole
-)
+@router.get("/{reservation_id}", response_model=sch_dining.ReservationWhole)
 async def read_dining_reservation(reservation_id: int, db: Session = Depends(get_db)):
     reservation = crd_dining.get_dining_reservation_by_id(
         db, reservation_id=reservation_id
@@ -27,16 +31,14 @@ async def read_dining_reservation(reservation_id: int, db: Session = Depends(get
     return reservation
 
 
-@router.post("/reservations/", response_model=sch_dining.DiningReservationOut)
+@router.post("/", response_model=sch_dining.DiningReservationOut)
 async def create_dining_reservation(
     reservation: sch_dining.DiningReservationCreate, db: Session = Depends(get_db)
 ):
     return crd_dining.create_dining_reservation(db, reservation=reservation)
 
 
-@router.put(
-    "/reservations/{reservation_id}", response_model=sch_dining.DiningReservationOut
-)
+@router.put("/{reservation_id}", response_model=sch_dining.DiningReservationOut)
 async def update_dining_reservation(
     reservation_id: int,
     reservation: sch_dining.DiningReservationUpdate,
@@ -54,9 +56,7 @@ async def update_dining_reservation(
     )
 
 
-@router.delete(
-    "/reservations/{reservation_id}", response_model=sch_dining.DiningReservationOut
-)
+@router.delete("/{reservation_id}", response_model=sch_dining.DiningReservationOut)
 async def delete_dining_reservation(reservation_id: int, db: Session = Depends(get_db)):
     db_reservation = crd_dining.delete_dining_reservation(
         db, reservation_id=reservation_id

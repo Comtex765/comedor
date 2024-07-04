@@ -31,12 +31,13 @@ app.include_router(dinings.router, prefix="/dinings", tags=["dinings"])
 app.include_router(suggests.router, prefix="/suggests", tags=["suggests"])
 app.include_router(qr_codes.router, prefix="/qr_codes", tags=["qr_codes"])
 
+
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
     if exc.status_code == 401:
         return JSONResponse(
             status_code=401,
-            content={"detail": "Nigell. You shouldn't be here."},
+            content={"detail": "Heeey. You shouldn't be here."},
         )
     return JSONResponse(
         status_code=exc.status_code,

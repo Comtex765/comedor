@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from api.schemas import sch_suggests as sch_suggest
 from api.crud import crd_suggests as crd_suggest
+from api.schemas import sch_tokens as sch_token
+from api.utils.auth import get_current_user
 from sqlalchemy.orm import Session
 
 from api.database import get_db
@@ -18,13 +20,18 @@ def create_suggestion(
 
 
 @router.get("", response_model=List[sch_suggest.SuggestOut])
-def read_suggestions(db: Session = Depends(get_db)):
-    suggests = crd_suggest.get_suggests(db=db)
+def read_suggestions(
+    db: Session = Depends(get_db),
+    current_user: sch_token.UserToken = Depends(get_current_user),
+):
+    if current_user.id_user_type == 0:
+        suggests = crd_suggest.get_suggests(db=db)
+        if suggests is None:
+            raise HTTPException(status_code=404, detail="[]")
 
-    if suggests is None:
-        raise HTTPException(status_code=404, detail="[]")
-
-    return suggests
+        return suggests
+    else:
+        return {"Hey Nigell": "You should'nt be here"}
 
 
 @router.get("/{suggest_id}", response_model=sch_suggest.SuggestOut)

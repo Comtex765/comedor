@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
+from api.schemas import sch_tokens as sch_token
 from api.schemas import sch_cards as sch_card
+from api.utils.auth import get_current_user
 from api.crud import crd_cards as crd_card
 from api.crud import crd_users as crd_user
 from sqlalchemy.orm import Session
@@ -38,9 +40,16 @@ async def read_card(user_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("", response_model=list[sch_card.CardOut])
-async def read_cards(db: Session = Depends(get_db)):
-    cards = crd_card.get_cards(db)
-    return cards
+async def read_cards(
+    db: Session = Depends(get_db),
+    current_user: sch_token.UserToken = Depends(get_current_user),
+):
+    if current_user.id_user_type == 0:
+        cards = crd_card.get_cards(db)
+        return cards
+    else:
+        return {"Hey Nigell": "You should'nt be here"}
+    
 
 
 @router.put("/{card_id}", response_model=sch_card.CardOut)
