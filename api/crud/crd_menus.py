@@ -177,3 +177,12 @@ def delete_menu(db: Session, menu_id: int):
     db.delete(db_menu)
     db.commit()
     return db_menu
+
+
+def get_meal_time(db: Session, meal_time_id: int):
+    db_meal_time = (
+        db.query(mod_meal_time)
+        .filter(mod_meal_time.id_meal_time == meal_time_id)
+        .first()
+    )
+    return db_meal_time

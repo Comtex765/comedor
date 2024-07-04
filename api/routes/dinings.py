@@ -20,7 +20,7 @@ async def read_dining_reservations(
         reservations = crd_dining.get_dining_reservations(db)
         return reservations
     else:
-        return {"Hey Nigell": "You should'nt be here"}
+        return {"WAIT!": "You should'nt be here"}
 
 
 @router.get("/{reservation_id}", response_model=sch_dining.ReservationWhole)

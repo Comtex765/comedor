@@ -1,8 +1,10 @@
-from fastapi import HTTPException, APIRouter, Depends
 from api.schemas import sch_dinings as sch_dining
 from api.crud import crd_dinings as crd_dining
-from datetime import date, time
+from api.crud import crd_menus as crd_menu
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from datetime import date, time, datetime
+
 
 from api.database import get_db
 from pydantic import BaseModel
@@ -22,14 +24,14 @@ class QRCodeData(BaseModel):
 @router.post("/validate_qr")
 async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
     reserva = crd_dining.get_only_dining_reservation(db, data.id_reserva)
+    menu = crd_menu.get_only_menu(db, reserva.id_menu)
+    meal_time = crd_menu.get_meal_time(db, menu.id_meal_time)
 
     if reserva is None:
         return {"valid": False, "detail": "No se encontró ninguna reserva asociada"}
-
-    if reserva.id_status == 2:
+    elif reserva.id_status == 2:
         return {"valid": False, "detail": "La reserva fue cancelada con anterioridad"}
-
-    if reserva.id_status == 3:
+    elif reserva.id_status == 3:
         return {"valid": False, "detail": "Ya fue utilizada la reserva"}
 
     is_valid = (
@@ -38,47 +40,56 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         and reserva.reservation_hour == data.hora_reserva
     )
 
-    """ print("COMPARATIVA\n\n\n")
-    print(
-        reserva.id_reservation,
-        " --- ",
-        data.id_reserva,
-        " ",
-        reserva.id_reservation == data.id_reserva,
-    )
-    print(
-        reserva.reservation_date,
-        " --- ",
-        data.fecha_reserva,
-        " ",
-        reserva.reservation_date == data.fecha_reserva,
-    )
-    print(
-        reserva.reservation_hour,
-        " --- ",
-        data.hora_reserva,
-        " ",
-        reserva.reservation_hour == data.hora_reserva,
-    ) """
+    date_today = date.today()
+    hour_today = datetime.now().time().strftime("%H:%M:%S")
+
+    if reserva.reservation_date < date_today:
+        update(db, 2, data)
+        return {"valid": False, "detail": "El día de la reserva ya pasó"}
+    elif reserva.reservation_date > date_today:
+        return {"valid": False, "detail": "La reserva es para días posteriores"}
+
+    if reserva.reservation_hour.strftime("%H:%M:%S") < meal_time.init_hour.strftime(
+        "%H:%M:%S"
+    ) or reserva.reservation_hour.strftime("%H:%M:%S") > meal_time.end_hour.strftime(
+        "%H:%M:%S"
+    ):
+        if reserva.reservation_hour.strftime("%H:%M:%S") < hour_today:
+            update(db, 2, data)
+            return {
+                "valid": False,
+                "detail": "La hora de la comida de tu reserva ya pasó",
+            }
+        elif reserva.reservation_hour.strftime("%H:%M:%S") > hour_today:
+            return {
+                "valid": False,
+                "detail": "Aún no es la hora de la comida de tu reserva",
+            }
 
     if is_valid:
-        reserva = crd_dining.get_only_dining_reservation(db, data.id_reserva)
-        reserva.id_status = 3
 
-        reservation_dict = {
-            "id_menu": reserva.id_menu,
-            "id_user": reserva.id_user,
-            "id_status": reserva.id_status,
-            "reservation_date": reserva.reservation_date,
-            "reservation_hour": reserva.reservation_hour,
-            "created_date": reserva.created_date,
-            "total_cost": reserva.total_cost,
-        }
+        update(db, 3, data)
+        return {"valid": True, "detail": "Reserva validada correctamente"}
 
-        reservation_dict = sch_dining.DiningReservationUpdate(**reservation_dict)
+    return {"valid": False, "detail": "La reserva NO es válida"}
 
-        crd_dining.update_dining_reservation(
-            db, reservation_id=reserva.id_reservation, reservation=reservation_dict
-        )
 
-    return {"valid": True, "detail": "Reserva validada correctamente"}
+def update(db: Session, status: int, data: QRCodeData):
+    reserva = crd_dining.get_only_dining_reservation(db, data.id_reserva)
+    reserva.id_status = status
+
+    reservation_dict = {
+        "id_menu": reserva.id_menu,
+        "id_user": reserva.id_user,
+        "id_status": reserva.id_status,
+        "reservation_date": reserva.reservation_date,
+        "reservation_hour": reserva.reservation_hour,
+        "created_date": reserva.created_date,
+        "total_cost": reserva.total_cost,
+    }
+
+    reservation_dict = sch_dining.DiningReservationUpdate(**reservation_dict)
+
+    crd_dining.update_dining_reservation(
+        db, reservation_id=reserva.id_reservation, reservation=reservation_dict
+    )

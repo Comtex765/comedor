@@ -31,7 +31,7 @@ def read_suggestions(
 
         return suggests
     else:
-        return {"Hey Nigell": "You should'nt be here"}
+        return {"WAIT!": "You should'nt be here"}
 
 
 @router.get("/{suggest_id}", response_model=sch_suggest.SuggestOut)

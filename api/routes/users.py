@@ -82,7 +82,7 @@ async def read_users(
         users = crd_user.get_users(db)
         return users
     else:
-        return {"Hey Nigell": "You should'nt be here"}
+        return {"WAIT!": "You should'nt be here"}
 
 
 @router.put("/{user_id}", response_model=sch_user.UserOut)

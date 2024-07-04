@@ -37,7 +37,7 @@ async def read_menus(
 
         return menus
     else:
-        return {"Hey Nigell": "You should'nt be here"}
+        return {"WAIT!": "You should'nt be here"}
 
 
 @router.get("/all/", response_model=List[sch_menu.MenuWithTypeTime])
@@ -53,7 +53,7 @@ async def read_menus(
 
         return menus
     else:
-        return {"Hey Nigell": "You should'nt be here"}
+        return {"WAIT!": "You should'nt be here"}
 
 
 @router.get("/desayunos/", response_model=List[sch_menu.MenuWithTypeTime])
