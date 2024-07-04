@@ -20,7 +20,6 @@ app.add_middleware(
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-
 @app.get("/")
 def get_route(current_user: sch_token.UserToken = Depends(get_current_user)):
     if current_user.id_user_type == 0:
@@ -43,7 +42,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
     if exc.status_code == 401:
         return JSONResponse(
             status_code=401,
-            content={"detail": "Heeey. You shouldn't be here."},
+            content={"WAIT!": "We're calling FBI"},
         )
     return JSONResponse(
         status_code=exc.status_code,

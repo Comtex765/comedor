@@ -49,7 +49,6 @@ async def read_cards(
         return cards
     else:
         return {"Hey Nigell": "You should'nt be here"}
-    
 
 
 @router.put("/{card_id}", response_model=sch_card.CardOut)

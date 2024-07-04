@@ -12,8 +12,10 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[sch_dining.ReservationWhole])
-async def read_dining_reservations(db: Session = Depends(get_db),
-    current_user: sch_token.UserToken = Depends(get_current_user),):
+async def read_dining_reservations(
+    db: Session = Depends(get_db),
+    current_user: sch_token.UserToken = Depends(get_current_user),
+):
     if current_user.id_user_type == 0:
         reservations = crd_dining.get_dining_reservations(db)
         return reservations
