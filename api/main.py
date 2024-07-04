@@ -11,8 +11,12 @@ from starlette.requests import Request
 
 app = FastAPI(
     title="Comtex",
-    version="1.0.0" , docs_url=None, redoc_url=None, openapi_url=None,
+    version="1.0.0",
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
 )
+
 
 app.add_middleware(
     CORSMiddleware,
