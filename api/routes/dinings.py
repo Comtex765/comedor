@@ -33,7 +33,7 @@ async def read_dining_reservation(reservation_id: int, db: Session = Depends(get
     return reservation
 
 
-@router.post("/", response_model=sch_dining.DiningReservationOut)
+@router.post("", response_model=sch_dining.DiningReservationOut)
 async def create_dining_reservation(
     reservation: sch_dining.DiningReservationCreate, db: Session = Depends(get_db)
 ):
