@@ -1,9 +1,12 @@
 from api.routes import users, cards, login, menus, suggests, dinings, qr_codes
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import FastAPI, HTTPException
-from starlette.requests import Request
+from api.schemas import sch_tokens as sch_token
 from starlette.responses import JSONResponse
+from api.utils.auth import get_current_user
+from starlette.requests import Request
+
 
 app = FastAPI(title="Comtex", version="1.0.0")
 
@@ -19,8 +22,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @app.get("/")
-def get_route():
-    return {"Success": "True"}
+def get_route(current_user: sch_token.UserToken = Depends(get_current_user)):
+    if current_user.id_user_type == 0:
+        return {"Success": "True"}
+    else:
+        return {"WAIT!": "We're calling FBI"}
 
 
 app.include_router(login.router, prefix="/login", tags=["login"])
