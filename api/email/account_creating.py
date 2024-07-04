@@ -44,7 +44,7 @@ def send_email(email_receiver, user):
 
         <br>
 
-        <h4 style="font-style: italic; font-size: 25px; text-decoration: underline;">
+        <h4 style="font-style: italic; font-size: 22px; text-decoration: underline; color: rgb(255, 92, 80);">
             Nunca compartas tus credenciales
         </h4>
     </p>
