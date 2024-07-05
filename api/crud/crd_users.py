@@ -171,3 +171,21 @@ def delete_user(db: Session, user_id: int):
     db.delete(db_user)
     db.commit()
     return db_user
+
+
+def update_password_by_email(db: Session, email: str, password: str):
+
+    # Buscar al usuario por email
+    user = get_only_user_by_email(db=db, email=email)
+
+    if user is None:
+        return None
+
+    # Actualizar la contraseña
+    user.set_password(password)
+
+    # Guardar los cambios en la base de datos
+    db.commit()
+    db.refresh(user)
+
+    return user

@@ -35,6 +35,7 @@ class User(Base):
     user_type = relationship("UserType", back_populates="users")
     card = relationship("Card", uselist=False, back_populates="user")
     dining_reservations = relationship("DiningReservation", back_populates="user")
+    codes = relationship("Code", back_populates="user")
 
     def set_password(self, password):
         self.hash_password = bcrypt.hashpw(
@@ -139,3 +140,13 @@ class Menu(Base):
     menu_type = relationship("MenuType", back_populates="menus")
     meal_time = relationship("MealTime", back_populates="menus")
     dining_reservations = relationship("DiningReservation", back_populates="menu")
+
+
+class Code(Base):
+    __tablename__ = "code"
+
+    code = Column(String(6), primary_key=True)
+    id_user = Column(Integer, ForeignKey("users.id_user"), primary_key=True)
+    estado = Column(BOOLEAN)
+
+    user = relationship("User", back_populates="codes")

@@ -1,4 +1,13 @@
-from api.routes import users, cards, login, menus, suggests, dinings, qr_codes
+from api.routes import (
+    recoverys,
+    users,
+    cards,
+    login,
+    menus,
+    suggests,
+    dinings,
+    qr_codes,
+)
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from starlette.responses import JSONResponse, HTMLResponse
 from fastapi import FastAPI, HTTPException, Depends
@@ -66,6 +75,7 @@ app.include_router(menus.router, prefix="/menus", tags=["menus"])
 app.include_router(dinings.router, prefix="/dinings", tags=["dinings"])
 app.include_router(suggests.router, prefix="/suggests", tags=["suggests"])
 app.include_router(qr_codes.router, prefix="/qr_codes", tags=["qr_codes"])
+app.include_router(recoverys.router, prefix="/recoverys", tags=["recoverys"])
 
 
 @app.exception_handler(HTTPException)
