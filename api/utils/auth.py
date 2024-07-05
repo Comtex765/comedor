@@ -1,5 +1,5 @@
 from fastapi.security import OAuth2PasswordBearer
-from api.crud.crd_users import get_user_by_email
+from api.crud.crd_users import get_only_user_by_email
 from api.schemas import sch_tokens as sch_token
 from sqlalchemy.orm import Session
 
@@ -35,7 +35,7 @@ def get_password_hash(password):
 
 
 def authenticate_user(db: Session, email: str, password: str):
-    user = get_user_by_email(db, email)
+    user = get_only_user_by_email(db, email)
     if not user or not verify_password(password, user.hash_password):
         return False
     return user
@@ -73,7 +73,7 @@ async def get_current_user(
     except Exception as e:
         print(f"💔  Error en lo del token: {e} 💔\n")
 
-    user = get_user_by_email(db, email=token_data.email)
+    user = get_only_user_by_email(db, email=token_data.email)
 
     if user is None:
         raise credentials_exception
