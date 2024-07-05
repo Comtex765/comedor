@@ -29,7 +29,7 @@ async def read_menus(
     db: Session = Depends(get_db),
     current_user: sch_token.UserToken = Depends(get_current_user),
 ):
-    if current_user.id_user_type == 0:
+    if 0 <= current_user.id_user_type <= 3:
         menus = crd_menu.get_menus(db)
 
         if menus == []:
