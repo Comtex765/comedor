@@ -36,14 +36,15 @@ async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
 @router.post("/balance")
 async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db)):
     user = crd_user.get_user_by_email(db, email=balance.email)
+
     if user is None:
-        raise HTTPException(status_code=404, detail="[]")
+        raise HTTPException(status_code=404, detail="El usuario no existe")
 
     card = crd_card.get_card_by_user_id(
         db, user_id=crd_user.get_user_id_by_email(db, email=balance.email)
     )
     if card is None:
-        raise HTTPException(status_code=404, detail="User has not a card asscociated")
+        raise HTTPException(status_code=404, detail="El usuario no tiene una tarjeta asociada")
 
     db_user = crd_user.update_balance(
         db, user_id=user.id_user, balance=balance.new_balance
