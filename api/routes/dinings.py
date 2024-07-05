@@ -33,6 +33,14 @@ async def read_dining_reservation(reservation_id: int, db: Session = Depends(get
     return reservation
 
 
+@router.get("/reportes/email/{email}", response_model=List[sch_dining.ReservationWhole])
+async def read_dining_reservation(email: str, db: Session = Depends(get_db)):
+    reservations = crd_dining.get_dinings_reservations_by_email(db=db, email=email)
+    if reservations is None:
+        raise HTTPException(status_code=404, detail="[]")
+    return reservations
+
+
 @router.post("", response_model=sch_dining.DiningReservationOut)
 async def create_dining_reservation(
     reservation: sch_dining.DiningReservationCreate, db: Session = Depends(get_db)
