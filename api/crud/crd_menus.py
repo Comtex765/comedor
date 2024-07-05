@@ -1,3 +1,4 @@
+from api.models import DiningReservation as mod_dining
 from api.models import MealTime as mod_meal_time
 from api.models import MenuType as mod_menu_type
 from api.schemas import sch_menus as sch_menu
@@ -177,6 +178,18 @@ def delete_menu(db: Session, menu_id: int):
     db.delete(db_menu)
     db.commit()
     return db_menu
+
+
+def comprobrar_reservacion_menu(db: Session, menu_id: int):
+    db_menu = (
+        db.query(mod_menu)
+        .join(mod_dining, mod_menu.id_menu == mod_dining.id_menu)
+        .filter(mod_menu.id_menu == menu_id)
+        .first()
+    )
+    if db_menu is None:
+        return True
+    return False
 
 
 def get_meal_time(db: Session, meal_time_id: int):

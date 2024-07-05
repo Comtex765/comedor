@@ -16,7 +16,9 @@ async def create_card(card: sch_card.CardCreate, db: Session = Depends(get_db)):
     db_card = crd_card.get_card_by_user_id(db, user_id=card.id_user)
 
     if db_card:
-        raise HTTPException(status_code=404, detail="El usuario ya tiene una tarjeta asociada")
+        raise HTTPException(
+            status_code=404, detail="El usuario ya tiene una tarjeta asociada"
+        )
 
     user = crd_user.get_user_by_id(db, user_id=card.id_user)
     if user is None:

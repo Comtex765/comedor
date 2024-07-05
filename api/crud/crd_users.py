@@ -50,7 +50,8 @@ def get_user_by_email(db: Session, email: str):
         .first()
     )
 
-    return  convert_user_to_user_with_type(user)
+    return convert_user_to_user_with_type(user)
+
 
 def get_only_user_by_email(db: Session, email: str):
     user = (
@@ -60,7 +61,7 @@ def get_only_user_by_email(db: Session, email: str):
         .first()
     )
 
-    return  user
+    return user
 
 
 def get_user_id_by_email(db: Session, email: str):
