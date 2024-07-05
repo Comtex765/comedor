@@ -31,6 +31,10 @@ def generar_qr(nombre, id_reserva, menu, hora_reserva, fecha_reserva):
     # Crear una imagen a partir de la instancia QR
     img = qr.make_image(fill_color="black", back_color="white")
 
+    qr_folder = Path("./api", "img")
+    if not qr_folder.exists():
+        os.mkdir(qr_folder)
+
     # Guardar la imagen en un archivo
     filename = f"./api/img/{id_reserva}_qrcode.png"
     img.save(filename)
