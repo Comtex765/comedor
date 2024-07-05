@@ -35,7 +35,7 @@ async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/balance")
 async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db)):
-    user = crd_user.get_user_by_email(db, email=balance.email)
+    user = crd_user.get_only_user_by_email(db, email=balance.email)
 
     if user is None:
         raise HTTPException(status_code=404, detail="El usuario no existe")
