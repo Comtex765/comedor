@@ -45,7 +45,6 @@ def get_user_discount(db: Session, user_id: int):
 def get_user_by_email(db: Session, email: str):
     user = (
         db.query(mod_user)
-        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
         .filter(mod_user.email == email)
         .first()
     )
