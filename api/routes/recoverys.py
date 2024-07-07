@@ -1,13 +1,9 @@
-from fastapi import Depends, APIRouter
-from api.schemas import sch_users as sch_user
 from api.schemas.sch_users import LoginRequest
-from sqlalchemy.orm import Session
 from api.crud import crd_users as crd_user
-
+from fastapi import Depends, APIRouter
+from sqlalchemy.orm import Session
 from api.database import get_db
 
-
-import api.utils.auth as auth
 
 router = APIRouter()
 
