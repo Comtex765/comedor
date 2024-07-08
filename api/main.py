@@ -16,17 +16,28 @@ from fastapi.security import OAuth2PasswordBearer
 from api.schemas import sch_tokens as sch_token
 from api.utils.auth import get_current_user
 from starlette.requests import Request
+from dotenv import load_dotenv
+
+import os
 
 
-app = FastAPI(
-    title="Comtex",
-    version="1.0.0",
-)
-""" 
-docs_url=None,
-redoc_url=None,
-openapi_url=None, 
-"""
+load_dotenv()
+
+BLOCK = os.getenv("BLOCK")
+
+if BLOCK == 1:
+    app = FastAPI(
+        title="Comtex",
+        version="1.0.0",
+        docs_url=None,
+        redoc_url=None,
+        openapi_url=None, 
+    )
+else:
+    app = FastAPI(
+        title="Comtex",
+        version="1.0.0"
+    )
 
 origins = [
     "https://comedor-app-azure.vercel.app",
