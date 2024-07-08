@@ -3,6 +3,7 @@ from api.utils.qr_generator import eliminar_archivo, generar_qr
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
+from colorama import Fore, Style
 from dotenv import load_dotenv
 
 import smtplib
@@ -232,9 +233,11 @@ def send_email(reservation: sch_dining):
         server.starttls()
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
         server.sendmail(EMAIL_SENDER, email_receiver, msg.as_string())
-        print(f"Correo enviado correctamente a {email_receiver}")
+
+        print(f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  Correo enviado correctamente a {email_receiver}  ❤️")
+
         eliminar_archivo(f"./api/img/{id_factura}_qrcode.png")
     except Exception as e:
-        print(f"Error al enviar el correo a {email_receiver}: {str(e)}")
+        print(f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔  Error al enviar el correo a {email_receiver}: {str(e)}  💔")
     finally:
         server.quit()

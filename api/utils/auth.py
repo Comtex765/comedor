@@ -1,12 +1,10 @@
-from fastapi.security import OAuth2PasswordBearer
 from api.crud.crd_users import get_only_user_by_email
+from fastapi.security import OAuth2PasswordBearer
 from api.schemas import sch_tokens as sch_token
-from sqlalchemy.orm import Session
-
 from fastapi import Depends, HTTPException
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-
+from colorama import Fore, Style
 from api.database import get_db
 from dotenv import load_dotenv
 from typing import Optional
@@ -71,7 +69,7 @@ async def get_current_user(
             raise credentials_exception
         token_data = sch_token.TokenData(email=email, type=type)
     except Exception as e:
-        print(f"💔  Error en lo del token: {e} 💔\n")
+        print(f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔    Error en lo del token: {e}  💔\n")
 
     user = get_only_user_by_email(db, email=token_data.email)
 

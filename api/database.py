@@ -1,9 +1,9 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy import text
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 from colorama import Fore, Style
 from dotenv import load_dotenv
+from sqlalchemy import text
 
 import os
 
@@ -45,7 +45,7 @@ def test_db_connection():
         db.close()
 
         print(
-            f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  Test connection successfully ❤️\n"
+            f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  Test connection successfully  ❤️\n"
         )
 
         url = "http:127.0.0.1:8000/docs"
@@ -53,7 +53,7 @@ def test_db_connection():
 
     except Exception as e:
         print(
-            f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔  Test connection failed: {e} 💔\n"
+            f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔  Test connection failed: {e}  💔\n"
         )
 
 

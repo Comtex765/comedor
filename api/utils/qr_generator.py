@@ -1,4 +1,6 @@
+from colorama import Fore, Style
 from pathlib import Path
+
 import qrcode
 import json
 import os
@@ -39,17 +41,17 @@ def generar_qr(nombre, id_reserva, menu, hora_reserva, fecha_reserva):
     filename = f"./api/img/{id_reserva}_qrcode.png"
     img.save(filename)
 
-    print(f"Código QR generado y guardado como {filename}")
+    print(f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  Código QR generado y guardado como {filename}  ❤️")
 
 
 def eliminar_archivo(ruta_archivo):
     archivo = Path(ruta_archivo)
     try:
         archivo.unlink()
-        print(f"Archivo QR {archivo} eliminado exitosamente")
+        print(f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  Archivo QR {archivo} eliminado exitosamente  ❤️")
     except FileNotFoundError:
-        print(f"El archivo QR {archivo} YA no existe")
+        print(f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  El archivo QR {archivo} YA no existe  ❤️")
     except PermissionError:
-        print(f"No tienes permiso para eliminar el archivo {archivo}")
+        print(f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔  No tienes permiso para eliminar el archivo {archivo}  💔")
     except Exception as e:
-        print(f"Error al eliminar el archivo {archivo}: {e}")
+        print(f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔  Error al eliminar el archivo {archivo}: {e}  💔")
