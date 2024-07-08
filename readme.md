@@ -1,84 +1,84 @@
 # Comedor ESPOCH
 
-Comedor ESPOCH es una aplicación diseñada para la gestión de reservas en el comedor de la Escuela Superior Politécnica de Chimborazo (ESPOCH). Utiliza una base de datos PostgreSQL, el framework FastAPI en Python, y varias otras herramientas para proporcionar una solución completa y eficiente.
+Comedor ESPOCH is an application designed for the management of reservations in the dining room of the Escuela Superior Politécnica de Chimborazo (ESPOCH). It uses a PostgreSQL database, the FastAPI framework in Python, and several other tools to provide a complete and efficient solution.
 
-## Tecnologías Utilizadas
+## Technologies Used
 
-- **Python**: Lenguaje de programación principal.
-- **FastAPI**: Framework para el desarrollo del backend.
-- **PostgreSQL**: Sistema de gestión de bases de datos.
-- **NextJS**: Para el desarrollo del frontend.
+- **Python**: Main programming language.
+- **FastAPI**: Framework for backend development.
+- **PostgreSQL**: Database management system.
+- **NextJS**: For frontend development.
 
-## Requisitos Previos
+## Prerequisites
 
-- Python 3.x instalado en el sistema.
-- PostgreSQL configurado y en funcionamiento.
+- _Python 3.x installed on the system._
+- _PostgreSQL configured and running._
 
-## Estructura del Proyecto
+## Project Structure
 
-El proyecto está organizado de la siguiente manera:
+The project is organized as follows:
 
 ```plaintext
-comedor/
+dining room/
 │
 ├── api/
-│   ├── crud/              # Operaciones CRUD
-│   ├── email/             # Funcionalidades de email's
-│   ├── img/               # Imágenes temporales en la aplicación (QR's)
-│   ├── routes/            # Definición de rutas de la API
-│   ├── schemas/           # Esquemas de datos Pydantic
-│   ├── utils/             # Utilidades diversas
-│   ├── __init__.py        # Archivo de inicialización del módulo API
-│   ├── database.py        # Configuración de la base de datos
-│   ├── main.py            # Punto de entrada principal de la aplicación
-│   ├── models.py          # Definición de modelos de la base de datos
+│ ├─── crud/ # CRUD operations
+│ ├─── email/ # email's functionalities.
+│ ├─── img/ # Temporary images in the application (QR's).
+│ ├─── routes/ # API routes definition.
+│ ├─── schemas/ # Pydantic data schemas.
+│ ├─── utils/ # Miscellaneous utilities.
+│ ├─── __init__.py # API module initialization file.
+│ ├─── database.py # Database configuration.
+│ ├─── main.py # Main entry point of the application
+│ ├─── models.py # Database models definition.
 │
-├── extra/                 # Archivos adicionales no específicos del código
-├── sql/                   # Archivos SQL para la base de datos
-├── venv/                  # Entorno virtual Python (ignorado por git)
-├── .env                   # Archivo de configuración de variables de entorno
-├── .gitignore             # Archivo para especificar qué archivos ignorar en git
-├── index.html             # Archivo HTML principal
-├── local_runner.py        # Script para ejecución local
-├── requirements.txt       # Lista de dependencias de Python
-└── runner.py              # Script principal para ejecución del proyecto en cloud
+├─── extra/ # Additional non-code specific files.
+├─── sql/ # SQL files for the database.
+├─── venv/ # Python virtual environment (ignored by git).
+├─── .env # Environment variables configuration file.
+├─── .gitignore # File to specify which files to ignore in git.
+├─── index.html # Main HTML file.
+├─── local_runner.py # Script for local execution
+├─── requirements.txt # List of Python dependencies.
+└─── runner.py # Main script for project execution in cloud.
 ```
 
-## Instalación y Configuración
+## Installation and Configuration
 
-### Paso 1: Crear un Entorno Virtual
+### Step 1: Create a Virtual Environment
 
-Primero, cree un entorno virtual para gestionar las dependencias del proyecto.
+First, create a virtual environment to manage the project dependencies.
 
 ```bash
 python -m venv venv
 ```
 
-### 2. Activar el entorno virtual
+### 2. Activate the virtual environment
 
-#### En Windows
+#### On Windows
 
 ```bash
 .\venv\Scripts\activate.bat
 ```
 
-#### En macOS/Linux
+#### On macOS/Linux
 
 ```bash
 source venv/bin/activate
 ```
 
-### Paso 3: Instalar las dependencias
+### Step 3: Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Paso 4: Configurar el archivo .env
+### Step 4: Configure the .env file
 
-Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+Create an `.env` file in the root of the project with the following variables:
 
-*Variables con texto son fijas, según tu caso cambia las variables que contienen []*
+*Variables with text are fixed, depending on your case change the variables containing []*.
 
 ```plaintext
 DB_NAME=comedor
@@ -95,10 +95,15 @@ EMAIL_PASSWORD=tuhw uauo hwck smlq
 IVA=0.15
 ```
 
-### Paso 5: Ejecución Local
+### Step 5: Local Execution
 
-Para ejecutar el proyecto localmente, puedes utilizar el script `local_runner.py`:
+To run the project locally, you can use the `local_runner.py` script:
 
 ```bash
 python local_runner.py
 ```
+
+## Access to the application
+The application will be up on localhost:8000
+
+_FastAPI documentation is located in /docs and /redoc_
