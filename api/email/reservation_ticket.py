@@ -15,6 +15,7 @@ EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 IVA = float(os.getenv("IVA"))
 
+
 def send_email(reservation: sch_dining):
     nombre = (
         reservation["user"]["user"]["user_name"]
@@ -225,7 +226,9 @@ def send_email(reservation: sch_dining):
     with open(f"./api/img/{id_factura}_qrcode.png", "rb") as qr_file:
         img = MIMEImage(qr_file.read())
         img.add_header("Content-ID", "<qr_code>")
-        img.add_header("Content-Disposition", "inline", filename=f"{id_factura}_qrcode.png")
+        img.add_header(
+            "Content-Disposition", "inline", filename=f"{id_factura}_qrcode.png"
+        )
         msg.attach(img)
 
     try:
@@ -234,10 +237,14 @@ def send_email(reservation: sch_dining):
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
         server.sendmail(EMAIL_SENDER, email_receiver, msg.as_string())
 
-        print(f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  Correo enviado correctamente a {email_receiver}  ❤️")
+        print(
+            f"\n{Fore.CYAN}INFO:{Style.RESET_ALL}     ❤️  Correo enviado correctamente a {email_receiver}  ❤️"
+        )
 
         eliminar_archivo(f"./api/img/{id_factura}_qrcode.png")
     except Exception as e:
-        print(f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔  Error al enviar el correo a {email_receiver}: {str(e)}  💔")
+        print(
+            f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔  Error al enviar el correo a {email_receiver}: {str(e)}  💔"
+        )
     finally:
         server.quit()

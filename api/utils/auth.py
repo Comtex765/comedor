@@ -69,7 +69,9 @@ async def get_current_user(
             raise credentials_exception
         token_data = sch_token.TokenData(email=email, type=type)
     except Exception as e:
-        print(f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔    Error en lo del token: {e}  💔\n")
+        print(
+            f"\n{Fore.RED}ERROR:{Style.RESET_ALL}     💔    Error en lo del token: {e}  💔\n"
+        )
 
     user = get_only_user_by_email(db, email=token_data.email)
 

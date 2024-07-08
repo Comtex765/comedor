@@ -25,19 +25,17 @@ load_dotenv()
 
 BLOCK = os.getenv("BLOCK")
 
-if BLOCK == 1:
+if int(BLOCK) == 1:
     app = FastAPI(
         title="Comtex",
         version="1.0.0",
         docs_url=None,
         redoc_url=None,
-        openapi_url=None, 
+        openapi_url=None,
     )
 else:
-    app = FastAPI(
-        title="Comtex",
-        version="1.0.0"
-    )
+    app = FastAPI(title="Comtex", version="1.0.0")
+
 
 origins = [
     "https://comedor-app-azure.vercel.app",
