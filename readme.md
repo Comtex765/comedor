@@ -37,8 +37,7 @@ dining room/
 ├─── sql/ # SQL files for the database.
 ├─── venv/ # Python virtual environment (ignored by git).
 ├─── .env # Environment variables configuration file.
-├─── .gitignore # File to specify which files to ignore in git.
-├─── index.html # Main HTML file.
+├─── .gitignore # File to specify which files to ignore in git.4
 ├─── local_runner.py # Script for local execution
 ├─── requirements.txt # List of Python dependencies.
 └─── runner.py # Main script for project execution in cloud.
