@@ -34,7 +34,7 @@ async def read_card(card_id: int, db: Session = Depends(get_db)):
     return db_card
 
 
-@router.get("/{user_id}", response_model=sch_card.CardOut)
+@router.get("/user_id/{user_id}", response_model=sch_card.CardOut)
 async def read_card(user_id: int, db: Session = Depends(get_db)):
     db_card = crd_card.get_card_by_user_id(db, user_id=user_id)
     if db_card is None:
