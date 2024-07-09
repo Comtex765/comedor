@@ -54,14 +54,14 @@ async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db
     return db_user
 
 
-@router.get("/balance/{user_id}}")
+@router.get("/balance/{user_id}")
 async def get_balance(user_id: int, db: Session = Depends(get_db)):
     balance = crd_user.get_only_user_by_id(db, user_id=user_id)
 
     if balance is None:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    return {"balance":balance}
+    return {"balance": balance}
 
 
 @router.get("/id/{user_id}", response_model=sch_user.UserWithType)
