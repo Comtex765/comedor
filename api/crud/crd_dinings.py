@@ -163,19 +163,22 @@ def create_dining_reservation(
 
     db_reservation.total_cost = float(price) * (100 - discount) / 100
 
-    user_balance = float(crd_user.get_only_balance_by_id(db=db, user_id=reservation.id_user))
+    user_balance = float(
+        crd_user.get_only_balance_by_id(db=db, user_id=reservation.id_user)
+    )
 
     if user_balance >= db_reservation.total_cost:
         db_reservation.reservation_hour = db_reservation.reservation_hour.strftime(
             "%H:%M:%S"
         )
 
-
         db.add(db_reservation)
         db.commit()
         db.refresh(db_reservation)
 
-        crd_user.update_balance(db=db, user_id=reservation.id_user, balance=(-1 *  db_reservation.total_cost))
+        crd_user.update_balance(
+            db=db, user_id=reservation.id_user, balance=(-1 * db_reservation.total_cost)
+        )
 
         send_email(
             get_dining_reservation_by_id(
