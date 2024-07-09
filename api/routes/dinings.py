@@ -18,6 +18,9 @@ async def read_dining_reservations(
 ):
     if current_user.id_user_type == 0:
         reservations = crd_dining.get_dining_reservations(db)
+
+        if reservations is None:
+            raise HTTPException(status_code=404, detail="[]")
         return reservations
     else:
         return {"WAIT!": "You should'nt be here"}

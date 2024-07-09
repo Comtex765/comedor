@@ -65,36 +65,38 @@ def get_dining_reservations(db: Session):
         .all()
     )
 
-    result = []
+    if reservations:
+        result = []
 
-    for res in reservations:
-        # Obtener información de usuario y menú para esta reserva
-        user_info = convert_user_to_user_with_type(res.user)
-        menu_info = convert_menu_to_menu_with_time_type(res.menu)
+        for res in reservations:
+            # Obtener información de usuario y menú para esta reserva
+            user_info = convert_user_to_user_with_type(res.user)
+            menu_info = convert_menu_to_menu_with_time_type(res.menu)
 
-        # Crear un diccionario con la información combinada
-        reservation_data = {
-            "reservation": {
-                "id_reservation": res.id_reservation,
-                "id_menu": res.id_menu,
-                "id_user": res.id_user,
-                "id_status": res.id_status,
-                "reservation_date": res.reservation_date,
-                "reservation_hour": res.reservation_hour,
-                "created_date": res.created_date,
-                "total_cost": res.total_cost,
-            },
-            "user": user_info.model_dump(),
-            "menu": menu_info.model_dump(),
-            "reserveStatus": {
-                "id_status": res.reserve_status.id_status,
-                "reserve_status": res.reserve_status.reserve_status,
-            },
-        }
+            # Crear un diccionario con la información combinada
+            reservation_data = {
+                "reservation": {
+                    "id_reservation": res.id_reservation,
+                    "id_menu": res.id_menu,
+                    "id_user": res.id_user,
+                    "id_status": res.id_status,
+                    "reservation_date": res.reservation_date,
+                    "reservation_hour": res.reservation_hour,
+                    "created_date": res.created_date,
+                    "total_cost": res.total_cost,
+                },
+                "user": user_info.model_dump(),
+                "menu": menu_info.model_dump(),
+                "reserveStatus": {
+                    "id_status": res.reserve_status.id_status,
+                    "reserve_status": res.reserve_status.reserve_status,
+                },
+            }
 
-        result.append(reservation_data)
+            result.append(reservation_data)
 
-    return result
+        return result
+    return None
 
 
 def get_dinings_reservations_by_email(db: Session, email: str):
