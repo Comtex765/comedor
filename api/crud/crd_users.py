@@ -59,7 +59,7 @@ def get_only_user_by_email(db: Session, email: str):
     return user
 
 
-def get_only_user_by_id(db: Session, user_id: int):
+def get_only_balance_by_id(db: Session, user_id: int):
     user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
 
     if user:
@@ -159,7 +159,7 @@ def update_balance(db: Session, user_id: int, balance: float):
     db_user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
 
     if db_user:
-        db_user.balance = balance + float(db_user.balance)
+        db_user.balance = float(balance) + float(db_user.balance)
         db.commit()
         db.refresh(db_user)
         return db_user

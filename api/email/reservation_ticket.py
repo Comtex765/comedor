@@ -188,7 +188,7 @@ def send_email(reservation: sch_dining):
             <div class="total" style="font-size: 18px;">
                 <p><strong>IVA {int(IVA * 100)}%:</strong> ${iva}</p>
                 <p><strong>Subotal:</strong> ${subtotal}</p>
-                <p><strong>Descuento:</strong> ${discount}</p>
+                <p><strong>Descuento {int(percent_discount)}%:</strong> ${discount}</p>
                 <p><strong>Total:</strong> ${total}</p>
             </div>
             <div class="footer" style="font-style: italic;">

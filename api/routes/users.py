@@ -33,7 +33,7 @@ async def create_user(user: sch_user.UserCreate, db: Session = Depends(get_db)):
     return crd_user.create_user(db=db, user=user)
 
 
-@router.post("/balance")
+@router.post("/balance", response_model=sch_user.UserOut)
 async def set_balance(balance: sch_user.SetBalance, db: Session = Depends(get_db)):
     user = crd_user.get_only_user_by_email(db, email=balance.email)
 

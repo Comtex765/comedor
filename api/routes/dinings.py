@@ -45,7 +45,11 @@ async def read_dining_reservation(email: str, db: Session = Depends(get_db)):
 async def create_dining_reservation(
     reservation: sch_dining.DiningReservationCreate, db: Session = Depends(get_db)
 ):
-    return crd_dining.create_dining_reservation(db, reservation=reservation)
+    db_dining = crd_dining.create_dining_reservation(db, reservation=reservation)
+    
+    if db_dining is None:
+        raise HTTPException(status_code=404, detail="Saldo insuficiente")
+    return db_dining 
 
 
 @router.put("/{reservation_id}", response_model=sch_dining.DiningReservationOut)
