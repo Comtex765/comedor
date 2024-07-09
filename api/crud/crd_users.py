@@ -54,14 +54,18 @@ def get_user_by_email(db: Session, email: str):
 
 
 def get_only_user_by_email(db: Session, email: str):
-    user = (
-        db.query(mod_user)
-        .join(mod_user_type, mod_user.id_user_type == mod_user_type.id_user_type)
-        .filter(mod_user.email == email)
-        .first()
-    )
+    user = db.query(mod_user).filter(mod_user.email == email).first()
 
     return user
+
+
+def get_only_user_by_id(db: Session, user_id: int):
+    user = db.query(mod_user).filter(mod_user.id_user == user_id).first()
+
+    if user:
+        return user.balance
+
+    return None
 
 
 def get_user_id_by_email(db: Session, email: str):
