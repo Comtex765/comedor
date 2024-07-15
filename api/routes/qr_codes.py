@@ -3,7 +3,7 @@ from api.crud import crd_dinings as crd_dining
 from api.crud import crd_menus as crd_menu
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from datetime import date, time, datetime
+from datetime import date, time, datetime, timedelta
 
 
 from api.database import get_db
@@ -40,7 +40,10 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         and reserva.reservation_hour == data.hora_reserva
     )
 
-    current_hour = datetime.now().time().strftime("%H:%M:%S")
+    current_hour = datetime.utcnownow().time()
+    current_hour_offset = timedelta(hours=-5)
+    current_hour = current_hour + current_hour_offset
+    current_hour = current_hour.strftime("%H:%M:%S")
 
     print(f"\n\nHORA ACTUAL --> {current_hour}")
 
