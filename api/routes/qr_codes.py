@@ -1,4 +1,4 @@
-from datetime import date, time, datetime, timedelta
+from datetime import date, time, datetime, timedelta, timezone
 from api.schemas import sch_dinings as sch_dining
 from api.crud import crd_dinings as crd_dining
 from api.crud import crd_menus as crd_menu
@@ -41,7 +41,7 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         and reserva.reservation_hour == data.hora_reserva
     )
 
-    current_hour = datetime.utcnownow().time()
+    current_hour = datetime.now(timezone.utc)
     current_hour_offset = timedelta(hours=-5)
     current_hour = current_hour + current_hour_offset
     current_hour = current_hour.strftime("%H:%M:%S")
