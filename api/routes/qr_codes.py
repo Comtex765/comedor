@@ -40,14 +40,7 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
         and reserva.reservation_hour == data.hora_reserva
     )
 
-    current_date = date.today()
     current_hour = datetime.now().time().strftime("%H:%M:%S")
-
-    if reserva.reservation_date < current_date:
-        update(db, 2, data)
-        return {"valid": False, "detail": "El día de la reserva ya pasó"}
-    elif reserva.reservation_date > current_date:
-        return {"valid": False, "detail": "La reserva es para días posteriores"}
 
     if current_hour < meal_time.init_hour.strftime("%H:%M:%S"):
         return {
