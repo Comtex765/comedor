@@ -43,7 +43,6 @@ async def validate_qr(data: QRCodeData, db: Session = Depends(get_db)):
     current_hour = datetime.now().time().strftime("%H:%M:%S")
 
     print(f"\n\nHORA ACTUAL --> {current_hour}")
-    """ print(f"{meal_time.init_hour.strftime("%H:%M:%S")} --- {meal_time.end_hour.strftime("%H:%M:%S")}") """
 
     if current_hour < meal_time.init_hour.strftime("%H:%M:%S"):
         return {
