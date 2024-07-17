@@ -17,6 +17,6 @@ async def recovery_password(login: LoginRequest, db: Session = Depends(get_db)):
     user = crd_user.update_password_by_email(db, user_email, new_pass)
 
     if user is None:
-        return {"Detail": "No se hizo el cambio de contraseña"}
+        return {"detail": "No se hizo el cambio de contraseña"}
 
-    return {"Detail": "Contraseña cambiada exitosamente"}
+    return {"detail": "Contraseña cambiada exitosamente"}
